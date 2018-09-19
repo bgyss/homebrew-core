@@ -19,8 +19,8 @@ class Tracebox < Formula
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
-  depends_on "lua"
   depends_on "json-c"
+  depends_on "lua"
 
   def install
     ENV.libcxx
@@ -38,7 +38,7 @@ class Tracebox < Formula
 
     You should be certain that you trust any software you are executing with
     elevated privileges.
-    EOS
+  EOS
   end
 
   test do

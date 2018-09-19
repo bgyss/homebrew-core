@@ -2,9 +2,8 @@ class DockerMachineDriverXhyve < Formula
   desc "Docker Machine driver for xhyve"
   homepage "https://github.com/zchee/docker-machine-driver-xhyve"
   url "https://github.com/zchee/docker-machine-driver-xhyve.git",
-    :tag => "v0.3.3",
-    :revision => "7d92f74a8b9825e55ee5088b8bfa93b042badc47"
-
+      :tag => "v0.3.3",
+      :revision => "7d92f74a8b9825e55ee5088b8bfa93b042badc47"
   head "https://github.com/zchee/docker-machine-driver-xhyve.git"
 
   bottle do
@@ -18,8 +17,8 @@ class DockerMachineDriverXhyve < Formula
 
   option "without-qcow2", "Do not support qcow2 disk image format"
 
-  depends_on :macos => :yosemite
   depends_on "go" => :build
+  depends_on :macos => :yosemite
   depends_on "docker-machine" => :recommended
   if build.with? "qcow2"
     depends_on "ocaml" => :build
@@ -79,7 +78,7 @@ class DockerMachineDriverXhyve < Formula
     enable, execute
         sudo chown root:wheel #{opt_prefix}/bin/docker-machine-driver-xhyve
         sudo chmod u+s #{opt_prefix}/bin/docker-machine-driver-xhyve
-    EOS
+  EOS
   end
 
   test do

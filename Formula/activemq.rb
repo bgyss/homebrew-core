@@ -1,8 +1,8 @@
 class Activemq < Formula
   desc "Apache ActiveMQ: powerful open source messaging server"
   homepage "https://activemq.apache.org/"
-  url "https://www.apache.org/dyn/closer.cgi?path=/activemq/5.15.3/apache-activemq-5.15.3-bin.tar.gz"
-  sha256 "5755d298bd136842b0e2479e5aa1c1dda4f61ad358af6f3b16231a3bf711fa61"
+  url "https://www.apache.org/dyn/closer.cgi?path=/activemq/5.15.6/apache-activemq-5.15.6-bin.tar.gz"
+  sha256 "0d5493da5eea538f62f8858c1983572c706fab8443fcf8eedf26bb605a98c600"
 
   bottle :unneeded
 
@@ -37,7 +37,7 @@ class Activemq < Formula
         </array>
       </dict>
     </plist>
-    EOS
+  EOS
   end
 
   test do

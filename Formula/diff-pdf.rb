@@ -3,22 +3,23 @@ class DiffPdf < Formula
   homepage "https://vslavik.github.io/diff-pdf/"
   url "https://github.com/vslavik/diff-pdf/archive/v0.2.tar.gz"
   sha256 "cb90f2e0fd4bc3fe235111f982bc20455a1d6bc13f4219babcba6bd60c1fe466"
-  revision 30
+  revision 33
 
   bottle do
     cellar :any
-    sha256 "d61aee37ac17b044090ca1ef57cc34020e212c51f0a2e8125dd9bb8c099cc857" => :high_sierra
-    sha256 "35454bb7deda741dca5168fce87d9ed3c8d32f24a6d8a1875a186b24ce44da7b" => :sierra
-    sha256 "6ebfd7c0aacf66731ec8099cf3b544507a4da89b903132d6c5f48857791d9a6b" => :el_capitan
+    sha256 "4693b0515bb3f7c6db4630710a1ba5bfc1c7d0487cbdbc9e107c4b8cf4e91416" => :mojave
+    sha256 "488f358a791a7531a838697fa4dad6a9fc94b256af15b3c1f83469c059e4ca8f" => :high_sierra
+    sha256 "247b718e5474c0186c9c3a22fe63dc9b695950c4b30e916b15dcd036263c85c4" => :sierra
+    sha256 "cbdf6acfa837170a52d0f904158a882ff17b4bbc646faed7082d1dc4169e8db4" => :el_capitan
   end
 
-  depends_on "pkg-config" => :build
-  depends_on "automake" => :build
   depends_on "autoconf" => :build
-  depends_on :x11
-  depends_on "wxmac"
+  depends_on "automake" => :build
+  depends_on "pkg-config" => :build
   depends_on "cairo"
   depends_on "poppler"
+  depends_on "wxmac"
+  depends_on :x11
 
   def install
     system "./bootstrap"

@@ -1,14 +1,15 @@
 class Libvirt < Formula
   desc "C virtualization API"
   homepage "https://www.libvirt.org"
-  url "https://libvirt.org/sources/libvirt-4.3.0.tar.xz"
-  sha256 "a531e22c8b985ecb2d1223b913fd6ec0f1800e3ebe02351924274885db20c2b7"
+  url "https://libvirt.org/sources/libvirt-4.7.0.tar.xz"
+  sha256 "92c279f7321624ac5a37a81f8bbe8c8d2a16781da04c63c99c92d3de035767e4"
   head "https://github.com/libvirt/libvirt.git"
 
   bottle do
-    sha256 "b0f8532af9f8802f6d2bc55c30b88c8b7d0a66353ae48cc93ae11d13ba5a2cb6" => :high_sierra
-    sha256 "034cc18a32fde675723a3e77db8fc2d7f7b41411c652a23da06b934508c0ea20" => :sierra
-    sha256 "158b6c73e6860de245e29f2d6926f7035cf3fe2a05791fb34698f4eea0b0cd34" => :el_capitan
+    sha256 "c0682eee3734d01b6d7b69ba6b2b8268708451001253675df3f6780eb7e2421b" => :mojave
+    sha256 "52188c2022adc1198d1d0f3ffe8d5514b826890b8c5b6617e1562f79dad50712" => :high_sierra
+    sha256 "3bf32c952c9fc07c48cc297d73789933907240ff81ce32587ecb826c76a6daa3" => :sierra
+    sha256 "3a160a602868d2f0e01697d614f1bcd1ec4b4acfb11989ce80e3dbb6134f671d" => :el_capitan
   end
 
   option "without-libvirtd", "Build only the virsh client and development libraries"
@@ -16,7 +17,6 @@ class Libvirt < Formula
   depends_on "pkg-config" => :build
   depends_on "gnutls"
   depends_on "libgcrypt"
-  depends_on "yajl"
 
   if build.head?
     depends_on "autoconf" => :build
@@ -38,7 +38,6 @@ class Libvirt < Formula
       --with-test
       --with-vbox
       --with-vmware
-      --with-yajl
       --without-qemu
     ]
 

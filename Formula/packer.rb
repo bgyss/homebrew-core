@@ -2,15 +2,16 @@ class Packer < Formula
   desc "Tool for creating identical machine images for multiple platforms"
   homepage "https://packer.io"
   url "https://github.com/hashicorp/packer.git",
-      :tag => "v1.2.3",
-      :revision => "b4df69af04373ef28caef3601befcaec1f909216"
+      :tag => "v1.3.1",
+      :revision => "fb1be8be30880cebb8dd15f2287fa929753bd8d1"
   head "https://github.com/hashicorp/packer.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "7293659a3d316abee03917ccfd80dbd7ad2bc1d8d3ada52208213a3c8fd7b91b" => :high_sierra
-    sha256 "abae158e2d8741f9c0c6c3e391ced4ab22f7f116a985b88ddfa22bdee8607e02" => :sierra
-    sha256 "05b057cc59b72b6a04bf14c229609514f4193dc5d2727957e0b4169488938e55" => :el_capitan
+    sha256 "2ef83a301a7d45cea23c11e5def7ecd84fa9de0242ae955f2380af68921fac64" => :mojave
+    sha256 "be39aeb515c11d0563848d6103bf1e6aa7e6f923ff6b2661fde8e18a9b19a03f" => :high_sierra
+    sha256 "8928c35cb52427ff77749a9b027ea50800bf33ff4c6f5a577731ad719abef225" => :sierra
+    sha256 "e2b6911a46ea9fd65a21d22edb9803290f4bcbab65abe5a3d0050f3fabe908a2" => :el_capitan
   end
 
   depends_on "go" => :build

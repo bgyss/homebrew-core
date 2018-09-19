@@ -2,15 +2,16 @@ class Erlang < Formula
   desc "Programming language for highly scalable real-time systems"
   homepage "https://www.erlang.org/"
   # Download tarball from GitHub; it is served faster than the official tarball.
-  url "https://github.com/erlang/otp/archive/OTP-20.3.6.tar.gz"
-  sha256 "2494df496943387dbdb895a8b6cf8c04807f6888ae1f7dab25290ad89dcf0eb2"
+  url "https://github.com/erlang/otp/archive/OTP-21.0.9.tar.gz"
+  sha256 "fbbd21358ddcf657b3125db636ef2260d421f5024ff9b4ad03c5e690651ec0dd"
   head "https://github.com/erlang/otp.git"
 
   bottle do
     cellar :any
-    sha256 "c708cbebd5e4f1b5c87c34a426bd5f7159215fa0ccd35546963333b9ee28af3d" => :high_sierra
-    sha256 "7a701bd18941924b1b6298851097b3826b9185258752f46034b14174d5ea4d17" => :sierra
-    sha256 "3bcb1cdd78c6aafe43e9748677219a19826e4f16a9dbdb079febc68fa7561451" => :el_capitan
+    sha256 "3d460f11022513a695147f656985c6a81d1aabe96f70f454c4e834442fb570b0" => :mojave
+    sha256 "a8a8d12a61826e8085015b4fe38511c3eaa1207200e7720ee90a72360e9e6d86" => :high_sierra
+    sha256 "7a71903323f6e50a928b46fd3f0abf1ea3f3c795b97d713055a87a2baf84f1c9" => :sierra
+    sha256 "de6637dd1b603329da49aae2996e133ca0df5f828ea05dd6c0b468d28aea99fa" => :el_capitan
   end
 
   option "without-hipe", "Disable building hipe; fails on various macOS systems"
@@ -26,20 +27,20 @@ class Erlang < Formula
   depends_on "automake" => :build
   depends_on "libtool" => :build
   depends_on "openssl"
+  depends_on "wxmac" => :recommended # for GUI apps like observer
   depends_on "fop" => :optional # enables building PDF docs
   depends_on :java => :optional
-  depends_on "wxmac" => :recommended # for GUI apps like observer
 
   resource "man" do
-    url "https://www.erlang.org/download/otp_doc_man_20.3.tar.gz"
-    mirror "https://fossies.org/linux/misc/otp_doc_man_20.3.tar.gz"
-    sha256 "17e0b2f94f11576a12526614a906ecad629b8804c25e6c18523f7c4346607112"
+    url "https://www.erlang.org/download/otp_doc_man_21.0.tar.gz"
+    mirror "https://fossies.org/linux/misc/otp_doc_man_21.0.tar.gz"
+    sha256 "10bf0e44b97ee8320c4868d5a4259c49d4d2a74e9c48583735ae0401f010fb31"
   end
 
   resource "html" do
-    url "https://www.erlang.org/download/otp_doc_html_20.3.tar.gz"
-    mirror "https://fossies.org/linux/misc/otp_doc_html_20.3.tar.gz"
-    sha256 "8099b62e9fa24b3f90eaeda151fa23ae729c8297e7d3fd8adaca865b35a3125d"
+    url "https://www.erlang.org/download/otp_doc_html_21.0.tar.gz"
+    mirror "https://fossies.org/linux/misc/otp_doc_html_21.0.tar.gz"
+    sha256 "fcc10885e8bf2eef14f7d6e150c34eeccf3fcf29c19e457b4fb8c203e57e153c"
   end
 
   def install
@@ -56,7 +57,6 @@ class Erlang < Formula
       --disable-debug
       --disable-silent-rules
       --prefix=#{prefix}
-      --enable-kernel-poll
       --enable-threads
       --enable-sctp
       --enable-dynamic-ssl-lib
@@ -70,6 +70,7 @@ class Erlang < Formula
     args << "--enable-dirty-schedulers" if build.with? "dirty-schedulers"
     args << "--enable-wx" if build.with? "wxmac"
     args << "--with-dynamic-trace=dtrace" if MacOS::CLT.installed?
+    args << "--enable-kernel-poll" if MacOS.version > :el_capitan
 
     if build.without? "hipe"
       # HIPE doesn't strike me as that reliable on macOS
@@ -101,7 +102,7 @@ class Erlang < Formula
       #{opt_lib}/erlang/man
 
     Access them with `erl -man`, or add this directory to MANPATH.
-    EOS
+  EOS
   end
 
   test do

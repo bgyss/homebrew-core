@@ -1,20 +1,21 @@
 class Bat < Formula
   desc "Clone of cat(1) with syntax highlighting and Git integration"
   homepage "https://github.com/sharkdp/bat"
-  url "https://github.com/sharkdp/bat/archive/v0.3.0.tar.gz"
-  sha256 "ffb3f2b20fb831e503c3db224a563dc30e766c627a08c069cf60e5182845207c"
+  url "https://github.com/sharkdp/bat/archive/v0.7.0.tar.gz"
+  sha256 "263e7e4fa3456929cc64eacd2ab01a2241fd10dd197a61f46dbaff2e7479b96b"
 
   bottle do
-    sha256 "02e24b89b950892f6fa7abda489a5232144fb78d7da88c6c6ba17d1724fdde89" => :high_sierra
-    sha256 "4781f4b8a80c3588a4bb18d293f7b59699049c028fc962cb69ebc941951f172d" => :sierra
-    sha256 "7bec128188eff3d5f74d5d019f3b752f1ce22b0db8efed0401db3624657f1a73" => :el_capitan
+    sha256 "4783cd85835535740035cbc4e3a4d33d9ea9d78b7e9f1cab71683206df1fbb26" => :mojave
+    sha256 "bacad4154383fc68ff5997c8d37a079809c89d27b2db197b05eb95ad988d9e47" => :high_sierra
+    sha256 "bddb9deddc89b053416f1c9d93cf72620b0ca44b410469db645ec697b219b6a6" => :sierra
+    sha256 "583b188a012c1e59b2f7157d35c24178c6a0f234166d2730f0bc9e4a8a0d266d" => :el_capitan
   end
 
   depends_on "cmake" => :build
   depends_on "rust" => :build
 
   def install
-    system "cargo", "install", "--root", prefix
+    system "cargo", "install", "--root", prefix, "--path", "."
   end
 
   test do

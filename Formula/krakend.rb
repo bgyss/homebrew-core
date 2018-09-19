@@ -1,18 +1,19 @@
 class Krakend < Formula
   desc "Ultra-High performance API Gateway built in Go"
   homepage "http://www.krakend.io/"
-  url "https://github.com/devopsfaith/krakend-ce/archive/0.4.2.tar.gz"
-  sha256 "5243037a757fbdbb0bf1bbfd5ad8e018cf2aad6ece30e6f8a58c7c24f36b19b1"
+  url "https://github.com/devopsfaith/krakend-ce/archive/0.6.0.tar.gz"
+  sha256 "e9932952f1d7660266c740499456f8f1fc2a312a1860dd521d78880d944da448"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "71235262350e1906c25406f4e707f1c3bd9ecfe31b14b5af0ed785c8f274d9cf" => :high_sierra
-    sha256 "74168eb0350f654bafd98d5919cf0c07434543af1f16aa3e7312865cce2e0900" => :sierra
-    sha256 "b49037c17c6f80891ae9fa194424abbfbb92d031205df3cd103fd0f03f69bdbb" => :el_capitan
+    sha256 "d7d11d8fafa707eae16114bc45307564b56f0a02d8ad2250453c6c5c8eafe152" => :mojave
+    sha256 "67670fe74911c949c00b7addedc9dee7057c40c8a5c2f8df6b109fe42cb9d2a8" => :high_sierra
+    sha256 "e4d5429a9f05738fd7531454c8c922652d48bf63c922b32b4c8ca778d6996d30" => :sierra
+    sha256 "77b1d557cc01bf9408d98fc2508570c8a6638389bb46ec5ca9a82e343fa5a955" => :el_capitan
   end
 
   depends_on "dep" => :build
-  depends_on "go" => :build
+  depends_on "go@1.10" => :build
 
   def install
     ENV["GOPATH"] = buildpath
@@ -47,7 +48,7 @@ class Krakend < Formula
         "bad": file
       }
     EOS
-    assert_match "ERROR", shell_output("#{bin}/krakend check -c krakend_incomplete.json 2>&1")
+    assert_match "ERROR", shell_output("#{bin}/krakend check -c krakend_bad_file.json 2>&1")
 
     (testpath/"krakend.json").write <<~EOS
       {

@@ -2,14 +2,15 @@ class Vim < Formula
   desc "Vi 'workalike' with many additional features"
   homepage "https://www.vim.org/"
   # vim should only be updated every 50 releases on multiples of 50
-  url "https://github.com/vim/vim/archive/v8.1.0001.tar.gz"
-  sha256 "c342acaa26589f371fa34a5ca213b95811f26185c12443f8f48ad2868dee2935"
+  url "https://github.com/vim/vim/archive/v8.1.0400.tar.gz"
+  sha256 "d7fb566656accd3fd10e3fb3fea0edcc628e13ba8c25136600cf1e4949d4fcea"
   head "https://github.com/vim/vim.git"
 
   bottle do
-    sha256 "aa30c3345f4c91e3ce3623d98bad5a4152dd18afc12764ddc7308477b3721cb4" => :high_sierra
-    sha256 "1ea8579584b4ffe836250cee849884f500ca7edcbeaed3a7e89103f33cf2bac2" => :sierra
-    sha256 "01b3d3743e34af68f644ce20f32bae23be7bd2df15737482c999b86cca0fed0c" => :el_capitan
+    sha256 "9aa24490ced6a944a0d9150ceb493f9bd595883fbcdd1eebff78dbfadf6ec5b4" => :mojave
+    sha256 "76c812cc3a02a5741d84e09003a0c4c6ce5ba73c7faf658333ca97d13d89a90b" => :high_sierra
+    sha256 "a577b4e19090d7031ce760ec778a40bad2f2c1566c0f9c1abedaee8084be3f2f" => :sierra
+    sha256 "028855a95ac5960362c4b667f777a2ac0174ddb6b156fa5ea027dd8902899ca4" => :el_capitan
   end
 
   deprecated_option "override-system-vi" => "with-override-system-vi"
@@ -31,12 +32,12 @@ class Vim < Formula
 
   depends_on "perl"
   depends_on "ruby"
+  depends_on :x11 if build.with? "client-server"
   depends_on "python" => :recommended if build.without? "python@2"
   depends_on "gettext" => :optional
   depends_on "lua" => :optional
   depends_on "luajit" => :optional
   depends_on "python@2" => :optional
-  depends_on :x11 if build.with? "client-server"
 
   conflicts_with "ex-vi",
     :because => "vim and ex-vi both install bin/ex and bin/view"
@@ -76,9 +77,14 @@ class Vim < Formula
     end
 
     if build.with?("lua") || build.with?("luajit")
-      ENV["LUA_PREFIX"] = HOMEBREW_PREFIX
       opts << "--enable-luainterp"
-      opts << "--with-luajit" if build.with? "luajit"
+
+      if build.with? "luajit"
+        opts << "--with-luajit"
+        opts << "--with-lua-prefix=#{Formula["luajit"].opt_prefix}"
+      else
+        opts << "--with-lua-prefix=#{Formula["lua"].opt_prefix}"
+      end
 
       if build.with?("lua") && build.with?("luajit")
         onoe <<~EOS

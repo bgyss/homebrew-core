@@ -1,19 +1,23 @@
 class SqliteAnalyzer < Formula
   desc "Analyze how space is allocated inside an SQLite file"
   homepage "https://www.sqlite.org/"
-  url "https://sqlite.org/2018/sqlite-src-3230100.zip"
-  version "3.23.1"
-  sha256 "2db45af989d8c61cb7e179b64e2d48878336428c8c8c379b4594e8861aca7dfc"
+  url "https://sqlite.org/2018/sqlite-src-3250100.zip"
+  version "3.25.1"
+  sha256 "e62f41c0b4de6ea537b70dc24efc37bd56e39bf6ceefcef20a0542fd912d7fae"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "7cb8f36e207d850403274875212448e0741e17f8310d50ca8e8f691c5453decb" => :high_sierra
-    sha256 "883497b8baff66489e56e8c23aa314e5dafeff224ac9c803805c5cd6d59902a3" => :sierra
-    sha256 "e0ba9200fbc43e39af167800d19ab7f4ba14279fe14127ed451093871d889c59" => :el_capitan
+    sha256 "093bc1acb938c5f228b491a056085d5f1834a8565de22ed4dab875d4f7396d73" => :mojave
+    sha256 "e2a10063e5500f9ebe911f986742b1c7aacf777da1a53c006f395fa06e11b83b" => :high_sierra
+    sha256 "6108b2cd3851df67afc36b37be727fda9f773958c02667a2e67ed4aa6b626373" => :sierra
+    sha256 "d66d6ad4a9d4ebf2361f7e6afb9f4bca934438e27c4ee7879e7cd7c6b598b86b" => :el_capitan
   end
 
   def install
-    system "./configure", "--disable-debug", "--with-tcl=/System/Library/Frameworks/Tcl.framework/", "--prefix=#{prefix}"
+    sdkprefix = MacOS.sdk_path_if_needed ? MacOS.sdk_path : ""
+    system "./configure", "--disable-debug",
+                          "--with-tcl=#{sdkprefix}/System/Library/Frameworks/Tcl.framework/",
+                          "--prefix=#{prefix}"
     system "make", "sqlite3_analyzer"
     bin.install "sqlite3_analyzer"
   end

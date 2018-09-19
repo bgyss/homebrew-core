@@ -1,8 +1,8 @@
 class ZanataClient < Formula
   desc "Zanata translation system command-line client"
   homepage "http://zanata.org/"
-  url "https://search.maven.org/remotecontent?filepath=org/zanata/zanata-cli/4.4.5/zanata-cli-4.4.5-dist.tar.gz"
-  sha256 "9f7823b64c8feff17fb42a3925dba58563b102028ae883d104a89682106f95ba"
+  url "https://search.maven.org/remotecontent?filepath=org/zanata/zanata-cli/4.6.2/zanata-cli-4.6.2-dist.tar.gz"
+  sha256 "6d4bac8c5b908abf734ff23e0aca9b05f4bc13e66588c526448f241d90473132"
 
   bottle :unneeded
 
@@ -15,6 +15,7 @@ class ZanataClient < Formula
   end
 
   test do
-    assert_match /Zanata Java command-line client/, shell_output("#{bin}/zanata-cli --help")
+    output = shell_output("#{bin}/zanata-cli --help")
+    assert_match "Zanata Java command-line client", output
   end
 end

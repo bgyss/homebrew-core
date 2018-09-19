@@ -1,15 +1,16 @@
 class Grafana < Formula
   desc "Gorgeous metric visualizations and dashboards for timeseries databases"
   homepage "https://grafana.com"
-  url "https://github.com/grafana/grafana/archive/v5.1.3.tar.gz"
-  sha256 "bbf69d28f4094d231b9033d916969eedee6b18e3787a44f5bda6c632f08251b9"
+  url "https://github.com/grafana/grafana/archive/v5.2.4.tar.gz"
+  sha256 "380418d98c908d17436b1d6a29eb04901075d6202d1d75db0b00a559fbecdcef"
   head "https://github.com/grafana/grafana.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "a6294cf37fbe63b9ddf209fecefe7a2a3243b3c6b4dd087244a9e8e18e3db2ca" => :high_sierra
-    sha256 "b76eea9c4e75e9ce5568fe2866a6d23be20095935ac2d86faec60ffd0e836f8f" => :sierra
-    sha256 "8f78fa4cacdd4a885caaab9e0025f06a559f9c6e3debd247e046efe776423f66" => :el_capitan
+    sha256 "a075fb627998bd629d878cfb07c3257703f9e90bcca3bb6b34d80e34710725cf" => :mojave
+    sha256 "ff4860da0c58cba21bfc01ed18b24f7a3449878b4aa2d84222af1a8df8490fb3" => :high_sierra
+    sha256 "b97ff61f1eac2ac58c973f88a59cba87ce9f6263e0787aeb924af96069787671" => :sierra
+    sha256 "2ca26039461f41e75ff472d046d63af75fd27ff5ea82976f3927cdaee6f50185" => :el_capitan
   end
 
   depends_on "go" => :build
@@ -31,8 +32,8 @@ class Grafana < Formula
       args << "--force" unless build.bottle?
       system "node_modules/grunt-cli/bin/grunt", *args
 
-      bin.install "bin/grafana-cli"
-      bin.install "bin/grafana-server"
+      bin.install "bin/darwin-amd64/grafana-cli"
+      bin.install "bin/darwin-amd64/grafana-server"
       (etc/"grafana").mkpath
       cp("conf/sample.ini", "conf/grafana.ini.example")
       etc.install "conf/sample.ini" => "grafana/grafana.ini"
@@ -87,7 +88,7 @@ class Grafana < Formula
         </dict>
       </dict>
     </plist>
-   EOS
+  EOS
   end
 
   test do
@@ -120,7 +121,7 @@ class Grafana < Formula
     listening = Timeout.timeout(5) do
       li = false
       r.each do |l|
-        if l =~ /Initializing HTTP Server/
+        if l =~ /Initializing HTTPServer/
           li = true
           break
         end

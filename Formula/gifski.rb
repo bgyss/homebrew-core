@@ -1,14 +1,14 @@
 class Gifski < Formula
   desc "Highest-quality GIF encoder based on pngquant"
   homepage "https://gif.ski/"
-  url "https://github.com/ImageOptim/gifski/archive/0.8.2.tar.gz"
-  sha256 "d7bf1b6515c273b822c94fc78e6d10fbc45d444a04bc3487fe3e799d6aa836e0"
-  revision 1
+  url "https://github.com/ImageOptim/gifski/archive/0.8.5.tar.gz"
+  sha256 "0c4f946e873e26777423e1bab37392220aec9382ae818866d2e3a52b3c976cf1"
 
   bottle do
-    sha256 "f0a8ae22f143d34efc15ebc94393b0d14ca835d5d832a39cb38f0947ab377f1d" => :high_sierra
-    sha256 "f6c0d8cda858d78353ef904517532aa8949cdeae4e0d8afeeb11c8a6faa52ec9" => :sierra
-    sha256 "a8e51cfb353e2b11dc266fc2ec59c2a1ba4f02d5cb1ced9a5fee12f7e09b9841" => :el_capitan
+    sha256 "acf76ee232c73d8682814ef3eaebd143314d8406d972e5f93042ac579d263a12" => :mojave
+    sha256 "ba26d7e59f381268f03c80539710060b6be978a214d1b0d7fda441c7e1aadd98" => :high_sierra
+    sha256 "b4c232f074255a72f3886e2372f62d668d17b106392ed5c4a5fda1b57aa57275" => :sierra
+    sha256 "b93399bf691af7d49c3f84930435c6bc516dc43aeebee1381615b9f032ffad78" => :el_capitan
   end
 
   option "with-openmp", "Enable OpenMP multithreading"
@@ -20,10 +20,9 @@ class Gifski < Formula
   fails_with :clang if build.with? "openmp"
 
   def install
-    args = ["--release"]
+    args = []
     args << "--features=openmp" if build.with? "openmp"
-    system "cargo", "build", *args
-    bin.install "target/release/gifski"
+    system "cargo", "install", "--root", prefix, "--path", ".", *args
   end
 
   test do

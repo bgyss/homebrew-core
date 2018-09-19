@@ -1,21 +1,22 @@
 class GstRtspServer < Formula
   desc "RTSP server library based on GStreamer"
   homepage "https://gstreamer.freedesktop.org/modules/gst-rtsp-server.html"
-  url "https://gstreamer.freedesktop.org/src/gst-rtsp-server/gst-rtsp-server-1.14.1.tar.xz"
-  sha256 "38634f3b25c2bf2967b1ff914b54ff384f8612f5aefc18accd72c78bf3b02d7c"
+  url "https://gstreamer.freedesktop.org/src/gst-rtsp-server/gst-rtsp-server-1.14.3.tar.xz"
+  sha256 "1f654c7617af15d13b67bf833f4c81d086ecbfd8cce7f2bf65fe5c1c3519f4e6"
 
   bottle do
-    sha256 "ba6adc517952ea63aca9f133314fa50649dbb530b3b6412856177aefe26f9baf" => :high_sierra
-    sha256 "5f63f82f821521680430e203a0bd4dd4b753d4eb617eef502a0b2c3714848ac7" => :sierra
-    sha256 "b6f5765f6565d1913dfd791036a48a8b61dc0c50bb3ffdf7b7b610de6b5527ac" => :el_capitan
+    sha256 "4f7fe898f0b69c9683adfc57013b86925449a5ff8c23cd87c4e525ba52ddd6e9" => :mojave
+    sha256 "d383909854593df9b8580e637729d88bf71a5a3e9fc3ce052251a6e81e0031b9" => :high_sierra
+    sha256 "fa70aeaa924d0ea0066e6a3744bfe0c490b93df0a50bda8bd8c523a973dd1f24" => :sierra
+    sha256 "6c658459295933a9abd45622b8ea06b82c2d60111517d454ef7b0d93d2f6a092" => :el_capitan
   end
 
   depends_on "gobject-introspection" => :build
   depends_on "libtool" => :build
   depends_on "pkg-config" => :build
   depends_on "gettext"
-  depends_on "gstreamer"
   depends_on "gst-plugins-base"
+  depends_on "gstreamer"
 
   def install
     system "./configure", "--prefix=#{prefix}",

@@ -5,14 +5,15 @@ class GitAnnex < Formula
 
   desc "Manage files with git without checking in file contents"
   homepage "https://git-annex.branchable.com/"
-  url "https://hackage.haskell.org/package/git-annex-6.20180509/git-annex-6.20180509.tar.gz"
-  sha256 "70c37cfc8cd87fd1a8365d6ec17c772a981e1d66980c91dc97e96b7758203427"
+  url "https://hackage.haskell.org/package/git-annex-6.20180807/git-annex-6.20180807.tar.gz"
+  sha256 "3a68f5d3a5c0ee13669b048dbd2ada5cb27e9b85780c295c0d1f54547c8078f2"
   head "git://git-annex.branchable.com/"
 
   bottle do
-    sha256 "983c506669773fc0ee3892ce74d8818c24b44c35d3a5a3bd6cf2f049ac35f0e5" => :high_sierra
-    sha256 "62b6068b13ddcddfb022407bab5be7bf775137744c4d9732e0a4b2935bc63da5" => :sierra
-    sha256 "586b7a92d08a44ccc73b64fd1255b0d47ce68e1a9226b3e4f12c24c2b2af7fb9" => :el_capitan
+    sha256 "a7213119a6e8893e3763675ef1f64179bf03b79cd21509f1a786d985284f4854" => :mojave
+    sha256 "c9677a3f23c1a615c2553dc1aea48e1e70bef126c678048d7ce35cf8376f3e2e" => :high_sierra
+    sha256 "4019012ef3033838ab1f0722e8c1211bdb4889519697b43a3dd5ca403d52695a" => :sierra
+    sha256 "f472290298c766891396007fc6fdb0e63bccd83ce20ac82e91145378f8e0996f" => :el_capitan
   end
 
   option "with-git-union-merge", "Build the git-union-merge tool"
@@ -27,7 +28,11 @@ class GitAnnex < Formula
 
   def install
     # Reported 28 Feb 2018 to aws upstream https://github.com/aristidb/aws/issues/244
+    # This is already resolved in aws 0.20 but we can't move to 0.20 until
+    # esqueleto 2.6.0 ships. See https://github.com/bitemyapp/esqueleto/issues/88
+    # The network 2.7.0.1 issue has been fixed upstream but needs a new release.
     install_cabal_package "--constraint", "http-conduit<2.3",
+                          "--constraint", "network<2.7.0.1",
                           :using => ["alex", "happy", "c2hs"],
                           :flags => ["s3", "webapp"] do
       # this can be made the default behavior again once git-union-merge builds properly when bottling
@@ -38,6 +43,30 @@ class GitAnnex < Formula
       end
     end
     bin.install_symlink "git-annex" => "git-annex-shell"
+  end
+
+  plist_options :manual => "git annex assistant --autostart"
+
+  def plist; <<~EOS
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+      <dict>
+        <key>Label</key>
+        <string>#{plist_name}</string>
+        <key>RunAtLoad</key>
+        <true/>
+        <key>KeepAlive</key>
+        <false/>
+        <key>ProgramArguments</key>
+        <array>
+          <string>#{opt_bin}/git-annex</string>
+          <string>assistant</string>
+          <string>--autostart</string>
+        </array>
+      </dict>
+    </plist>
+  EOS
   end
 
   test do

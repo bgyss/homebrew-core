@@ -1,30 +1,27 @@
 class KnotResolver < Formula
   desc "Minimalistic, caching, DNSSEC-validating DNS resolver"
   homepage "https://www.knot-resolver.cz"
-  url "https://secure.nic.cz/files/knot-resolver/knot-resolver-2.3.0.tar.xz"
-  sha256 "2d19c5daf8440bd3d2acd1886b9ede65f04f7753c6fd4618a92a1a4ba3b27a9b"
+  url "https://secure.nic.cz/files/knot-resolver/knot-resolver-3.0.0.tar.xz"
+  sha256 "68a0137e0e15061ee7dec53a2e424aa3266611720db3843853c6e7774a414f40"
   head "https://gitlab.labs.nic.cz/knot/knot-resolver.git"
 
   bottle do
-    sha256 "dd496ee05149df3956ff847ca3a050b8a37dd4433b9d559b23aa993c36203a0b" => :high_sierra
-    sha256 "ccd5b5cd6ed613292b78b004eaa7086bac2b774e8ab5cdca65ac79b3cf49869b" => :sierra
-    sha256 "36733f655b19474e7fd2deca365bbc812edfb745b9adf40bf6087b8e874cef52" => :el_capitan
+    sha256 "fdfabc08c1b1c0a2c841a1303ea2d0e674ff3aca6d300cf2329f8ddac05501d7" => :mojave
+    sha256 "4b5b17ee520db61baaf982ea76a8588db8c5e51ae3bbbd2cd32519d462b41b15" => :high_sierra
+    sha256 "61fec1dd8c0827d136bd6c3a220279c5802d89c7d0032ebc2471ff04c0c8ba8c" => :sierra
+    sha256 "01138521630da787d776d5f0d017e09d19fa7448376a9187aebb624f7b9ca1b8" => :el_capitan
   end
 
   option "without-nettle", "Compile without DNS cookies support"
-  option "with-hiredis", "Compile with Redis cache storage support"
-  option "with-libmemcached", "Compile with memcached cache storage support"
 
   depends_on "cmocka" => :build
   depends_on "pkg-config" => :build
   depends_on "gnutls"
   depends_on "knot"
-  depends_on "luajit"
   depends_on "libuv"
   depends_on "lmdb"
+  depends_on "luajit"
   depends_on "nettle" => :recommended
-  depends_on "hiredis" => :optional
-  depends_on "libmemcached" => :optional
 
   def install
     # Since we don't run `make install` or `make etc-install`, we need to
@@ -51,7 +48,7 @@ class KnotResolver < Formula
   def root_keys; <<~EOS
     . IN DS 19036 8 2 49aac11d7b6f6446702e54a1607371607a1a41855200fd2ce1cdde32f24e8fb5
     . IN DS 20326 8 2 e06d44b80b8f1d39a95c0b0d7c65d08458e880409bbc683457104237c7f8ec8d
-    EOS
+  EOS
   end
 
   plist_options :startup => true
@@ -81,7 +78,7 @@ class KnotResolver < Formula
       <string>#{var}/log/kresd.log</string>
     </dict>
     </plist>
-    EOS
+  EOS
   end
 
   test do

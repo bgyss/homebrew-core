@@ -1,14 +1,25 @@
 class Poppler < Formula
   desc "PDF rendering library (based on the xpdf-3.0 code base)"
   homepage "https://poppler.freedesktop.org/"
-  url "https://poppler.freedesktop.org/poppler-0.65.0.tar.xz"
-  sha256 "89c8cf73f83efda78c5a9bd37c28f4593ad0e8a51556dbe39ed81e1ae2dd8f07"
   head "https://anongit.freedesktop.org/git/poppler/poppler.git"
 
+  stable do
+    url "https://poppler.freedesktop.org/poppler-0.68.0.tar.xz"
+    sha256 "f90d04f0fb8df6923ecb0f106ae866cf9f8761bb537ddac64dfb5322763d0e58"
+
+    # https://gitlab.freedesktop.org/poppler/poppler/merge_requests/18
+    # Should be safe to remove on next release but check if merged.
+    patch do
+      url "https://gitlab.freedesktop.org/poppler/poppler/merge_requests/18.diff"
+      sha256 "ef7d7b7fed6799911b7ef925395b8de552aadaf3754d7b02fe3505649518808c"
+    end
+  end
+
   bottle do
-    sha256 "27c74583e59cce9bb30e86f0b9b68279b7a9857c0d7e8cd775b1af601bbc1017" => :high_sierra
-    sha256 "072cc17830d427b041ad0377fea49789fd4563d2936acf8ac75a2dd53081e1e4" => :sierra
-    sha256 "23ddf6a875667892aa6df15f03a7d28e8ba5dff066e3a616a17a423a44aa90e0" => :el_capitan
+    sha256 "bc1012f84c9fb5188560f90fecf555b97609df433f4b55585697f3d1731c68c6" => :mojave
+    sha256 "5669b0631c862647c4d47f7efb410593d3d1207f0795ba23b8e30dd1d4d96d26" => :high_sierra
+    sha256 "9b54804d8b9378a64477b1da9c022ee1557387a3a3dc17b10a582b982eed072d" => :sierra
+    sha256 "424693d9dd27b19b4da42e8847d056e968720b5c52f3acddf3a07954c4e0936a" => :el_capitan
   end
 
   option "with-qt", "Build Qt5 backend"
@@ -31,9 +42,9 @@ class Poppler < Formula
   depends_on "libpng"
   depends_on "libtiff"
   depends_on "openjpeg"
-  depends_on "qt" => :optional
   depends_on "little-cms2" => :optional
   depends_on "nss" => :optional
+  depends_on "qt" => :optional
 
   conflicts_with "pdftohtml", "pdf2image", "xpdf",
     :because => "poppler, pdftohtml, pdf2image, and xpdf install conflicting executables"

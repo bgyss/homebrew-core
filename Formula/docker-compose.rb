@@ -3,24 +3,21 @@ class DockerCompose < Formula
 
   desc "Isolated development environments using Docker"
   homepage "https://docs.docker.com/compose/"
-  url "https://github.com/docker/compose/archive/1.21.2.tar.gz"
-  sha256 "3fdaa361dceb919b6008a925b8b672d7402cc3dd8277b8f26b028dd546d39926"
+  url "https://github.com/docker/compose/archive/1.22.0.tar.gz"
+  sha256 "d28a2e96976dae306f480f656e4487a0334a5f95c456408f4bbe4acc5760ffa0"
+  revision 1
   head "https://github.com/docker/compose.git"
 
   bottle do
     cellar :any
-    sha256 "37f5e4b2875a4b5cdab8eb2163e8cdbc7236fe66928bdb72ca7e0ba4ca40c3b2" => :high_sierra
-    sha256 "774894a2c375d9775ce08ac73d907a85a6e32dd50d44339048bcb3f933a9d2a5" => :sierra
-    sha256 "ad24e287df39d64f9a9c62635f3e48ebca600c6f06549cdf5db53e16ee202af4" => :el_capitan
+    sha256 "6f4fd0b89872112313590bbfdbda5a9724a09e5ab68f72a63e002817661c8433" => :mojave
+    sha256 "c9cb00b759ff10533bda01529bcf94167e92f3ea7adc182f0a3de42716ea87b1" => :high_sierra
+    sha256 "95141cd35a49a0c2ede5606c0a2cc37d53d47f80559467135d2b22bab7732d5f" => :sierra
+    sha256 "a626ce2379b1b9f635eb2917498452f0d50c4944ba9c9636387be121370e8f5f" => :el_capitan
   end
 
-  depends_on "python@2"
   depends_on "libyaml"
-
-  # It's possible that the user wants to manually install Docker and Machine,
-  # for example, they want to compile Docker manually
-  depends_on "docker" => :recommended
-  depends_on "docker-machine" => :recommended
+  depends_on "python@2"
 
   def install
     system "./script/build/write-git-sha" if build.head?

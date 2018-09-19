@@ -1,14 +1,15 @@
 class Ffmpeg < Formula
   desc "Play, record, convert, and stream audio and video"
   homepage "https://ffmpeg.org/"
-  url "https://ffmpeg.org/releases/ffmpeg-4.0.tar.xz"
-  sha256 "ed945daf40b124e77a685893cc025d086f638bc703183460aff49508edb3a43f"
+  url "https://ffmpeg.org/releases/ffmpeg-4.0.2.tar.xz"
+  sha256 "a95c0cc9eb990e94031d2183f2e6e444cc61c99f6f182d1575c433d62afb2f97"
   head "https://github.com/FFmpeg/FFmpeg.git"
 
   bottle do
-    sha256 "81e41ed56f44fdceec52d14a2815abd0ec14415c0ce2ca8136df6d4b6d02a818" => :high_sierra
-    sha256 "f0d43e35dd75d0c8069e2ebbd0710667793c00f5f9fef3094f651c3c22fd4fd3" => :sierra
-    sha256 "1f642ce937d45b32737d7983790ff2f97133efa31c4e3d13268ca6e475c925cc" => :el_capitan
+    sha256 "83f8f5c5b79b7bbe6e13ab918f4bd8effb1eba2e7091a5776eeb31db84e74102" => :mojave
+    sha256 "5522a58020c3b5c68e5628818ee746822fe38747810c29b4aa865f4fe2803d57" => :high_sierra
+    sha256 "98cdb186d1dd9c9eb2149b5d5d5c15dc13cecb58fed25232abcbeeb1236c92b8" => :sierra
+    sha256 "4ef0ba0bd512fff69004bb33417a8516d1d8e9dc5e3eb05ea9f2ac15f557cdb2" => :el_capitan
   end
 
   option "with-chromaprint", "Enable the Chromaprint audio fingerprinting library"
@@ -33,6 +34,7 @@ class Ffmpeg < Formula
   option "with-xz", "Enable decoding of LZMA-compressed TIFF files"
   option "with-zeromq", "Enable using libzeromq to receive commands sent through a libzeromq client"
   option "with-zimg", "Enable z.lib zimg library"
+  option "with-srt", "Enable SRT library"
   option "without-lame", "Disable MP3 encoder"
   option "without-qtkit", "Disable deprecated QuickTime framework"
   option "without-securetransport", "Disable use of SecureTransport"
@@ -80,6 +82,7 @@ class Ffmpeg < Formula
   depends_on "sdl2" => :optional
   depends_on "snappy" => :optional
   depends_on "speex" => :optional
+  depends_on "srt" => :optional
   depends_on "tesseract" => :optional
   depends_on "theora" => :optional
   depends_on "two-lame" => :optional
@@ -146,6 +149,7 @@ class Ffmpeg < Formula
     args << "--enable-opencl" if MacOS.version > :lion
     args << "--enable-videotoolbox" if MacOS.version >= :mountain_lion
     args << "--enable-openssl" if build.with? "openssl"
+    args << "--enable-libsrt" if build.with? "srt"
 
     if build.with? "xz"
       args << "--enable-lzma"

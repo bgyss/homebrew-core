@@ -5,19 +5,20 @@ class HopenpgpTools < Formula
 
   desc "Command-line tools for OpenPGP-related operations"
   homepage "https://hackage.haskell.org/package/hopenpgp-tools"
-  url "https://hackage.haskell.org/package/hopenpgp-tools/hopenpgp-tools-0.21.tar.gz"
-  sha256 "c352c11d9a68aaec5d22cfcabcd3dec28bfb627c11410be051ecf191ed23484f"
-  head "https://anonscm.debian.org/git/users/clint/hopenpgp-tools.git"
+  url "https://hackage.haskell.org/package/hopenpgp-tools-0.21.2/hopenpgp-tools-0.21.2.tar.gz"
+  sha256 "b418dfc81e9fb19216ffe31cdc74c78c054a049d1eb6c01f3a4acbe5c722068c"
+  head "https://salsa.debian.org/clint/hOpenPGP.git"
 
   bottle do
     cellar :any
-    sha256 "14dec2ea4c6a6f02dd39ed3faec435473e729656d8fc488de9c8f29543633b85" => :high_sierra
-    sha256 "556be4a355884f9e45d24019739c4118f5936636a47c691fff50395da8e7a098" => :sierra
-    sha256 "4b8a7ef4ce9eba7f16b1db856d6c5e3c51b386701243bf454e049efa5cb093b1" => :el_capitan
+    sha256 "3976c2e1b20371a75a3e1a4f592eb52ae368d2e36ba1d7578229eb6199d3f04a" => :mojave
+    sha256 "fbff2a1c3fd29fae1479da5e67536d2e2bd7d47f787c56879f547d47c513dd67" => :high_sierra
+    sha256 "69fba3dc2a07ad7c9f8b59cfaf4b5df8cf33a48420cb1e7fcaafe374b0e6c897" => :sierra
+    sha256 "d3a4f24226d6b0c6ad6021b0f9a29c54c60b9e4b3e5c682f014d6ab8d77ce6fa" => :el_capitan
   end
 
-  depends_on "ghc@8.2" => :build
   depends_on "cabal-install" => :build
+  depends_on "ghc" => :build
   depends_on "pkg-config" => :build
   depends_on "nettle"
 
@@ -27,9 +28,7 @@ class HopenpgpTools < Formula
   end
 
   def install
-    # Reported 7 Oct 2017 "Old versions of graphviz have no constraint on fgl"
-    # See https://github.com/haskell-infra/hackage-trustees/issues/114
-    install_cabal_package "--constraint", "graphviz >= 2999.17.0.0", :using => ["alex", "happy"]
+    install_cabal_package :using => ["alex", "happy"]
   end
 
   test do

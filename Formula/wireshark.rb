@@ -1,22 +1,21 @@
 class Wireshark < Formula
   desc "Graphical network analyzer and capture tool"
   homepage "https://www.wireshark.org"
-  url "https://www.wireshark.org/download/src/all-versions/wireshark-2.6.0.tar.xz"
-  mirror "https://1.eu.dl.wireshark.org/src/wireshark-2.6.0.tar.xz"
-  sha256 "711c7f01d27a8817d58277a5487cef3e3c7bab1c8caaf8f4c92aa21015b9117f"
+  url "https://www.wireshark.org/download/src/all-versions/wireshark-2.6.3.tar.xz"
+  mirror "https://1.eu.dl.wireshark.org/src/wireshark-2.6.3.tar.xz"
+  sha256 "d158a8a626dc0997a826cf12b5316a3d393fb9f93d84cc86e75b212f0044a3ec"
   head "https://code.wireshark.org/review/wireshark", :using => :git
 
   bottle do
-    sha256 "5bb80bfd27c7b455a951afa29ad244f58b77b22cb2ba3be12ef54f41ed41243c" => :high_sierra
-    sha256 "42f6409d8d57ab65630cdc4b467a8ed9b5fadc4484c86383e6b2e9f48e7ff339" => :sierra
-    sha256 "479b873745e8c807d649e711cbd3bfd2f3c83201288264153eb3ae664c0841ed" => :el_capitan
+    sha256 "9fed2716bed0a8315f9c9a0f30f82d478e98fe111862f04a8464fca6e46bc450" => :mojave
+    sha256 "872a932622c6c2cc36add68a16b25ddedc694e5409d8a43b167df7a6266793b1" => :high_sierra
+    sha256 "0bc571ddc4ffce33a9573343f4ffd7b50e5cb074b7774daa934237c35ff0c031" => :sierra
+    sha256 "2965b3cbbace6a701c9e0c164af91ae432aaa77311e955b6dee763ac4c456467" => :el_capitan
   end
 
   deprecated_option "with-qt5" => "with-qt"
 
-  option "with-gtk+3", "Build the wireshark command with gtk+3"
-  option "with-gtk+", "Build the wireshark command with gtk+"
-  option "with-qt", "Build the wireshark command with Qt (can be used with or without either GTK option)"
+  option "with-qt", "Build the wireshark command with Qt"
   option "with-headers", "Install Wireshark library headers for plug-in development"
   option "with-nghttp2", "Enable HTTP/2 header dissection"
 
@@ -26,22 +25,26 @@ class Wireshark < Formula
   depends_on "gnutls"
   depends_on "libgcrypt"
   depends_on "libmaxminddb"
-  depends_on "lua"
+  depends_on "lua@5.1"
   depends_on "libsmi" => :optional
   depends_on "libssh" => :optional
   depends_on "nghttp2" => :optional
-  depends_on "portaudio" => :optional
   depends_on "qt" => :optional
-  depends_on "gtk+3" => :optional
-  depends_on "gtk+" => :optional
-  depends_on "adwaita-icon-theme" if build.with? "gtk+3"
 
   def install
-    args = std_cmake_args + %w[
+    args = std_cmake_args + %W[
       -DENABLE_CARES=ON
       -DENABLE_GNUTLS=ON
-      -DENABLE_LUA=ON
       -DENABLE_MAXMINDDB=ON
+      -DBUILD_wireshark_gtk=OFF
+      -DENABLE_PORTAUDIO=OFF
+      -DENABLE_LUA=ON
+      -DLUA_INCLUDE_DIR=#{Formula["lua@5.1"].opt_include}/lua-5.1
+      -DLUA_LIBRARY=#{Formula["lua@5.1"].opt_lib}/liblua5.1.dylib
+      -DCARES_INCLUDE_DIR=#{Formula["c-ares"].opt_include}
+      -DGCRYPT_INCLUDE_DIR=#{Formula["libgcrypt"].opt_include}
+      -DGNUTLS_INCLUDE_DIR=#{Formula["gnutls"].opt_include}
+      -DMAXMINDDB_INCLUDE_DIR=#{Formula["libmaxminddb"].opt_include}
     ]
 
     if build.with? "qt"
@@ -52,15 +55,6 @@ class Wireshark < Formula
       args << "-DBUILD_wireshark=OFF"
       args << "-DENABLE_APPLICATION_BUNDLE=OFF"
       args << "-DENABLE_QT5=OFF"
-    end
-
-    if build.with?("gtk+3") || build.with?("gtk+")
-      args << "-DBUILD_wireshark_gtk=ON"
-      args << "-DENABLE_GTK3=" + (build.with?("gtk+3") ? "ON" : "OFF")
-      args << "-DENABLE_PORTAUDIO=ON" if build.with? "portaudio"
-    else
-      args << "-DBUILD_wireshark_gtk=OFF"
-      args << "-DENABLE_PORTAUDIO=OFF"
     end
 
     if build.with? "libsmi"
@@ -108,14 +102,14 @@ class Wireshark < Formula
     Wireshark.app can be downloaded directly from the website:
       https://www.wireshark.org/
 
-    Alternatively, install with Homebrew-Cask:
+    Alternatively, install with Homebrew Cask:
       brew cask install wireshark
 
     If your list of available capture interfaces is empty
     (default macOS behavior), install ChmodBPF:
 
       brew cask install wireshark-chmodbpf
-    EOS
+  EOS
   end
 
   test do

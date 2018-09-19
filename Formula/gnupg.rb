@@ -1,60 +1,41 @@
 class Gnupg < Formula
   desc "GNU Pretty Good Privacy (PGP) package"
   homepage "https://gnupg.org/"
-  url "https://gnupg.org/ftp/gcrypt/gnupg/gnupg-2.2.7.tar.bz2"
-  sha256 "d95b361ee6ef7eff86af40c8c72bf9313736ac9f7010d6604d78bf83818e976e"
+  url "https://gnupg.org/ftp/gcrypt/gnupg/gnupg-2.2.10.tar.bz2"
+  sha256 "799dd37a86a1448732e339bd20440f4f5ee6e69755f6fd7a73ee8af30840c915"
 
   bottle do
-    sha256 "04b66440416de2c8573fb070e5186e838f2c48b208ceb8b4fdbf5e6431091e10" => :high_sierra
-    sha256 "6170381a7ffcb15e93b5a201e5fcaa7badc1cf61519ec530bf06706f2450c710" => :sierra
-    sha256 "e19fb1c8ca817a250efa13cfe2d89d62a69f760cc6b5e3c3ba8bbfac5d25690a" => :el_capitan
+    sha256 "7190eeef3372dec0d663f29f59fdc192b4f2b684b00b684405a3fd086b3fddcf" => :mojave
+    sha256 "a6c89bd1575cd29b96454f64f782b321105725a6e35228724f3654403c9a47f4" => :high_sierra
+    sha256 "2ec723b779f410e4facb11c0523fe3ce1a1b31514228d348857e06ae02d70188" => :sierra
+    sha256 "92b34de0e0713e1a5179a5c82ee4aec1579d798a6a2e5772db2716f30d791d9b" => :el_capitan
   end
-
-  option "with-gpgsplit", "Additionally install the gpgsplit utility"
-  option "with-gpg-zip", "Additionally install the gpg-zip utility"
-  option "with-large-secmem", "Additionally allocate extra secure memory"
-  option "without-libusb", "Disable the internal CCID driver"
-
-  deprecated_option "without-libusb-compat" => "without-libusb"
 
   depends_on "pkg-config" => :build
   depends_on "sqlite" => :build if MacOS.version == :mavericks
-  depends_on "npth"
-  depends_on "gnutls"
-  depends_on "libgpg-error"
-  depends_on "libgcrypt"
-  depends_on "libksba"
-  depends_on "libassuan"
-  depends_on "pinentry"
-  depends_on "gettext"
   depends_on "adns"
-  depends_on "libusb" => :recommended
-  depends_on "readline" => :optional
-  depends_on "encfs" => :optional
+  depends_on "gettext"
+  depends_on "gnutls"
+  depends_on "libassuan"
+  depends_on "libgcrypt"
+  depends_on "libgpg-error"
+  depends_on "libksba"
+  depends_on "libusb"
+  depends_on "npth"
+  depends_on "pinentry"
 
   def install
-    args = %W[
-      --disable-dependency-tracking
-      --disable-silent-rules
-      --prefix=#{prefix}
-      --sbindir=#{bin}
-      --sysconfdir=#{etc}
-      --enable-symcryptrun
-      --with-pinentry-pgm=#{Formula["pinentry"].opt_bin}/pinentry
-      --enable-all-tests
-    ]
-
-    args << "--disable-ccid-driver" if build.without? "libusb"
-    args << "--with-readline=#{Formula["readline"].opt_prefix}" if build.with? "readline"
-    args << "--enable-large-secmem" if build.with? "large-secmem"
-
-    system "./configure", *args
+    system "./configure", "--disable-dependency-tracking",
+                          "--disable-silent-rules",
+                          "--prefix=#{prefix}",
+                          "--sbindir=#{bin}",
+                          "--sysconfdir=#{etc}",
+                          "--enable-all-tests",
+                          "--enable-symcryptrun",
+                          "--with-pinentry-pgm=#{Formula["pinentry"].opt_bin}/pinentry"
     system "make"
     system "make", "check"
     system "make", "install"
-
-    bin.install "tools/gpgsplit" if build.with? "gpgsplit"
-    bin.install "tools/gpg-zip" if build.with? "gpg-zip"
   end
 
   def post_install
@@ -70,7 +51,7 @@ class Gnupg < Formula
 
     For full details on each change and how it could impact you please see
       https://www.gnupg.org/faq/whats-new-in-2.1.html
-    EOS
+  EOS
   end
 
   test do

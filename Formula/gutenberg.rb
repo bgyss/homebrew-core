@@ -1,23 +1,23 @@
 class Gutenberg < Formula
   desc "Opinionated static site generator with everything built-in"
   homepage "https://www.getgutenberg.io/"
-  url "https://github.com/Keats/gutenberg/archive/v0.3.3.tar.gz"
-  sha256 "5652e370d3826b2a4dc5ad70f0a6e695748eb6c41c566fde0cef88ac93ccb221"
+  url "https://github.com/Keats/gutenberg/archive/v0.4.2.tar.gz"
+  sha256 "8d3fb9972a17f6fa8a7830c8d129a7d587f0bbfc36f5351dc4c9e44f46aa4e2d"
   head "https://github.com/Keats/gutenberg.git"
 
   bottle do
-    sha256 "d5936e84a4c873e63a7860ab7ad39c3f0619acb9997162770c4a575bf19d35d6" => :high_sierra
-    sha256 "506307c2f25e81039bd3568d5e7b1ca8f840a5189a74dad8d21330aac408fffb" => :sierra
-    sha256 "2fd5988c2ce2c9426cad1d3da33e9475929dc6ee48260651fc783da7d781f9d5" => :el_capitan
+    sha256 "3c13efb0ed3263a70a81036d55575be92e18c4f4b1e0652b906fa32ccfef48e7" => :mojave
+    sha256 "3cb0122fc3082758478d8fea2c9933bc20882b7e33ea67b0e62019d7eb447c76" => :high_sierra
+    sha256 "f0a8fa2af6664964168e8a2325cfb69c01af5009d2f1d1c65fd857772969d738" => :sierra
+    sha256 "5489f83ea724f922d7ebda5bf6c7664c0fe46ef0e3e5e59b854826b2870839d7" => :el_capitan
   end
 
   depends_on "cmake" => :build
   depends_on "rust" => :build
 
   def install
-    system "cargo", "build", "--release"
+    system "cargo", "install", "--root", prefix, "--path", "."
 
-    bin.install "target/release/gutenberg"
     bash_completion.install "completions/gutenberg.bash-completion"
     zsh_completion.install "completions/_gutenberg"
     fish_completion.install "completions/gutenberg.fish"

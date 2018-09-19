@@ -3,21 +3,22 @@ class Snapcraft < Formula
 
   desc "Package any app for every Linux desktop, server, cloud or device"
   homepage "https://snapcraft.io/"
-  url "https://files.pythonhosted.org/packages/be/69/9fc4c20854d2732798b06fff9d4df74c71783c89ab9f93d1eba13a6a31d0/snapcraft-2.42.tar.gz"
-  sha256 "80249c14c727af2659626f3bfbaa25d36c74fe40cb07175b3acc758ba6434de3"
+  url "https://files.pythonhosted.org/packages/eb/46/c2cc809e56786719169240e7517e4775f4ddae4d40cacaddc2797aa1788d/snapcraft-2.43.1.tar.gz"
+  sha256 "5a4e12a0e775cf2e7255abe24f5c9104cd57ac75a0a187388827f9ace4589698"
 
   bottle do
     cellar :any
-    sha256 "fd9b7c9db2f3ec21d972fa33bb475a5fcaee1705e7c1772a2600c00424609721" => :high_sierra
-    sha256 "1c25ce5577f91cbbda88419a5402450110bfdedced97b048697f56b99ea93b91" => :sierra
-    sha256 "fe1f6333bafc5a7eb04d640e3fca19841ce878f809966f997597e0ed4f891112" => :el_capitan
+    sha256 "a1456fd1cd3cd7c7dec24929d0280a5f7176e1f3c8455bbe9f9962ca25828df7" => :mojave
+    sha256 "6519f046d9082655f592a9b7a69ada791220c7772564d0c55937fa48a476a36c" => :high_sierra
+    sha256 "5f4e1123e4affd783d7d66d5898a4d357f2d65f4cb5f8cb4548662fafea8f892" => :sierra
+    sha256 "f1677f46fc83de19a99295af80da0275899a23c2b16a4260b6303e37fc18cecb" => :el_capitan
   end
 
   depends_on "libsodium"
   depends_on "libyaml"
   depends_on "lxc"
-  depends_on "squashfs"
   depends_on "python"
+  depends_on "squashfs"
 
   resource "certifi" do
     url "https://files.pythonhosted.org/packages/15/d4/2f888fc463d516ff7bf2379a4e9a552fef7f22a94147655d9b1097108248/certifi-2018.1.18.tar.gz"
@@ -115,8 +116,8 @@ class Snapcraft < Formula
   end
 
   resource "PyYAML" do
-    url "https://files.pythonhosted.org/packages/4a/85/db5a2df477072b2902b0eb892feb37d88ac635d36245a72a6a69b23b383a/PyYAML-3.12.tar.gz"
-    sha256 "592766c6303207a20efc445587778322d7f73b161bd994f227adaa341ba212ab"
+    url "https://files.pythonhosted.org/packages/9e/a3/1d13970c3f36777c583f136c136f804d70f500168edc1edea6daa7200769/PyYAML-3.13.tar.gz"
+    sha256 "3ef3092145e9b70e3ddd2c7ad59bdd0252a94dfe3949721633e41344de00a6bf"
   end
 
   resource "raven" do
@@ -165,7 +166,6 @@ class Snapcraft < Formula
   end
 
   def install
-    virtualenv_create(libexec, "python3")
     virtualenv_install_with_resources
   end
 

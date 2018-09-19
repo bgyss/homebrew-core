@@ -1,14 +1,16 @@
 class Octave < Formula
   desc "High-level interpreted language for numerical computing"
   homepage "https://www.gnu.org/software/octave/index.html"
-  url "https://ftp.gnu.org/gnu/octave/octave-4.4.0.tar.gz"
-  mirror "https://ftpmirror.gnu.org/octave/octave-4.4.0.tar.gz"
-  sha256 "72f846379fcec7e813d46adcbacd069d72c4f4d8f6003bcd92c3513aafcd6e96"
+  url "https://ftp.gnu.org/gnu/octave/octave-4.4.1.tar.xz"
+  mirror "https://ftpmirror.gnu.org/octave/octave-4.4.1.tar.xz"
+  sha256 "7e4e9ac67ed809bd56768fb69807abae0d229f4e169db63a37c11c9f08215f90"
+  revision 1
 
   bottle do
-    sha256 "749a05f276092a3d77357883465dccae17e6dc168dcff988437461a9d9013cca" => :high_sierra
-    sha256 "faa5410a85ffdf8d531d29ea6fb69c57ed3380fbc40e70a2ac0a6cc46976ac1e" => :sierra
-    sha256 "5fb1b5a0d43b07ed96bc2c4c529f8d82b04db8f632ffeebb42caee7518c2bc22" => :el_capitan
+    sha256 "810246aba07277ed78ad9619bcadea57a630a1e3e5bc67bc018d17c3e8d0b036" => :mojave
+    sha256 "87db66946554f51ed6262374bcdb9cb6305dd7eee92b4f7eeccc0753fa82b50d" => :high_sierra
+    sha256 "d35b841df256eadcd0ab74da2dae20f9e6064e7580930c5878f5d3525d9ad16d" => :sierra
+    sha256 "cb50ca8777de46163a9f9dc9431deae955c49092815801113d0cf008d4ed4294" => :el_capitan
   end
 
   head do
@@ -19,7 +21,6 @@ class Octave < Formula
     depends_on "bison" => :build
     depends_on "icoutils" => :build
     depends_on "librsvg" => :build
-    depends_on "sundials"
   end
 
   # Complete list of dependencies at https://wiki.octave.org/Building
@@ -49,7 +50,11 @@ class Octave < Formula
   depends_on "qrupdate"
   depends_on "readline"
   depends_on "suite-sparse"
+  depends_on "sundials"
+  depends_on "texinfo"
   depends_on "veclibfort"
+
+  depends_on "qt" => :optional
 
   # Dependencies use Fortran, leading to spurious messages about GCC
   cxxstdlib_check :skip
@@ -60,6 +65,9 @@ class Octave < Formula
     # cause linking problems.
     inreplace "src/mkoctfile.in.cc", /%OCTAVE_CONF_OCT(AVE)?_LINK_(DEPS|OPTS)%/, '""'
 
+    args = []
+    args << "--without-qt" if build.without? "qt"
+
     system "./bootstrap" if build.head?
     system "./configure", "--prefix=#{prefix}",
                           "--disable-dependency-tracking",
@@ -67,15 +75,14 @@ class Octave < Formula
                           "--enable-link-all-dependencies",
                           "--enable-shared",
                           "--disable-static",
-                          "--disable-docs",
-                          "--without-OSMesa",
-                          "--without-qt",
+                          "--without-osmesa",
                           "--with-hdf5-includedir=#{Formula["hdf5"].opt_include}",
                           "--with-hdf5-libdir=#{Formula["hdf5"].opt_lib}",
                           "--with-x=no",
                           "--with-blas=-L#{Formula["veclibfort"].opt_lib} -lvecLibFort",
                           "--with-portaudio",
-                          "--with-sndfile"
+                          "--with-sndfile",
+                          *args
     system "make", "all"
 
     # Avoid revision bumps whenever fftw's or gcc's Cellar paths change
@@ -83,6 +90,10 @@ class Octave < Formula
       s.gsub! Formula["fftw"].prefix.realpath, Formula["fftw"].opt_prefix
       s.gsub! Formula["gcc"].prefix.realpath, Formula["gcc"].opt_prefix
     end
+
+    # Make sure that Octave uses the modern texinfo at run time
+    rcfile = buildpath/"scripts/startup/site-rcfile"
+    rcfile.append_lines "makeinfo_program(\"#{Formula["texinfo"].opt_bin}/makeinfo\");"
 
     system "make", "install"
   end

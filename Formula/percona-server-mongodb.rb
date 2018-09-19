@@ -1,23 +1,25 @@
 class PerconaServerMongodb < Formula
   desc "Drop-in MongoDB replacement"
   homepage "https://www.percona.com"
-  url "https://www.percona.com/downloads/percona-server-mongodb-3.6/percona-server-mongodb-3.6.3-1.1/source/tarball/percona-server-mongodb-3.6.3-1.1.tar.gz"
-  version "3.6.3-1.1"
-  sha256 "d6639737b45d5617d49fd7bd1b7b610fe64fe96c8a32c2d4fa3d1b6f74124d0b"
+  url "https://www.percona.com/downloads/percona-server-mongodb-3.6/percona-server-mongodb-3.6.6-1.4/source/tarball/percona-server-mongodb-3.6.6-1.4.tar.gz"
+  version "3.6.6-1.4"
+  sha256 "a30d3932c449b61df049807a51d7fbaf6c3534b68116e82829f63049dff69d2a"
 
   bottle do
-    sha256 "a968b611a6532ac1739bc61cadbcc4d2e59f8524a876a5cfc17f79cc7b41dd85" => :high_sierra
-    sha256 "a5820f428042091854482e2486fdc1d06d715534e664038edd79ed5f19b289e5" => :sierra
+    sha256 "c496e0f350cdceb2c82a14f206cf4210c44faf4b01033c6d31d6240a7cf4d665" => :mojave
+    sha256 "a6649a385a19ab31d07d50c45779aea87bbd8ea149b099d57975859a6cb546ce" => :high_sierra
+    sha256 "62478907290b11c522b15b06ceb4038a0244f90d2ac2da2587534f3fcb476707" => :sierra
   end
 
   option "with-boost", "Compile using installed boost, not the version shipped with this formula"
   option "with-sasl", "Compile with SASL support"
 
-  depends_on "boost" => :optional
   depends_on "go" => :build
-  depends_on :macos => :sierra
+  depends_on "pkg-config" => :build
   depends_on "scons" => :build
+  depends_on :macos => :sierra
   depends_on "openssl" => :recommended
+  depends_on "boost" => :optional
 
   conflicts_with "mongodb",
     :because => "percona-server-mongodb and mongodb install the same binaries."
@@ -28,8 +30,8 @@ class PerconaServerMongodb < Formula
   end
 
   resource "PyYAML" do
-    url "https://files.pythonhosted.org/packages/4a/85/db5a2df477072b2902b0eb892feb37d88ac635d36245a72a6a69b23b383a/PyYAML-3.12.tar.gz"
-    sha256 "592766c6303207a20efc445587778322d7f73b161bd994f227adaa341ba212ab"
+    url "https://files.pythonhosted.org/packages/9e/a3/1d13970c3f36777c583f136c136f804d70f500168edc1edea6daa7200769/PyYAML-3.13.tar.gz"
+    sha256 "3ef3092145e9b70e3ddd2c7ad59bdd0252a94dfe3949721633e41344de00a6bf"
   end
 
   resource "typing" do
@@ -149,7 +151,7 @@ class PerconaServerMongodb < Formula
       </dict>
     </dict>
     </plist>
-    EOS
+  EOS
   end
 
   test do

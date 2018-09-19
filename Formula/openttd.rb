@@ -3,7 +3,6 @@ class Openttd < Formula
   homepage "https://www.openttd.org/"
   url "https://binaries.openttd.org/releases/1.8.0/openttd-1.8.0-source.tar.xz"
   sha256 "c2d32d9d736d27202a020027a3729ae763f5432ae6f424891e57a4095eeb087f"
-
   head "https://git.openttd.org/openttd/trunk.git"
 
   bottle do
@@ -12,9 +11,9 @@ class Openttd < Formula
     sha256 "b2b8d6cf06c840acbf425d4b89daf146541d46f19cd3aa7f09a622d7897b3a9f" => :el_capitan
   end
 
+  depends_on "pkg-config" => :build
   depends_on "lzo"
   depends_on "xz"
-  depends_on "pkg-config" => :build
 
   resource "opengfx" do
     url "https://bundles.openttdcoop.org/opengfx/releases/0.5.4/opengfx-0.5.4.zip"

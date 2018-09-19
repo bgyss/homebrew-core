@@ -3,46 +3,47 @@ class Emscripten < Formula
   homepage "https://kripken.github.io/emscripten-site/"
 
   stable do
-    url "https://github.com/kripken/emscripten/archive/1.38.1.tar.gz"
-    sha256 "9037937a8e9e73c0a2e85a3a9f082d7fbd4fb37c2bfc3039b156656af5cad8bc"
+    url "https://github.com/kripken/emscripten/archive/1.38.12.tar.gz"
+    sha256 "7c07a8e4671f268f3941245d6cd2e43d8d6c38fea04f86a872a33022fdd6b71f"
 
     resource "fastcomp" do
-      url "https://github.com/kripken/emscripten-fastcomp/archive/1.38.1.tar.gz"
-      sha256 "a42cee72b046e7dba59696a339e22e235c715850b4cf0b0138328585e39ea256"
+      url "https://github.com/kripken/emscripten-fastcomp/archive/1.38.12.tar.gz"
+      sha256 "932213e11efc42ada365a13d99ec270573962e76a4f33e4c3d1315ff252e1d87"
     end
 
     resource "fastcomp-clang" do
-      url "https://github.com/kripken/emscripten-fastcomp-clang/archive/1.38.1.tar.gz"
-      sha256 "0e1329b008d07880ba437a7c901d4b4c19edc2f05de53987889b1022d09e2f7e"
+      url "https://github.com/kripken/emscripten-fastcomp-clang/archive/1.38.12.tar.gz"
+      sha256 "406750b6bbe635436266a73ff5e996d60597f39b0ff46b728a75aa56a7e8cac5"
     end
   end
 
   bottle do
     cellar :any
-    sha256 "720df655c455a589433dab99ebb55128f98b9f9406e9add083837073298145fa" => :high_sierra
-    sha256 "5f5f52c4745ba45bdb22f6f1bb455ff55d79d4e065af8e28f00600a5a22601b9" => :sierra
-    sha256 "634f155ca694812cd1d9affcf65fee01e718133bba156ab2d6aa6601729efcbf" => :el_capitan
+    sha256 "b1b75e61ac30e21bd6ba3fd59c35ef8f8deeda74135bee1f5f33a7678f1387d9" => :mojave
+    sha256 "57955f338f884f10d6cd44505521164822473bdbfade81bd29fe3c139d248b16" => :high_sierra
+    sha256 "7b246813a47d17ab7a50079665fcf7d1aa7164f5cb342663eca939d1bc8c81d5" => :sierra
+    sha256 "d2a6a0937780734f7d1f527ab2a7c15f64d2a984ac5c382ad437a03f2dcb6318" => :el_capitan
   end
 
   head do
-    url "https://github.com/kripken/emscripten.git", :branch => "master"
+    url "https://github.com/kripken/emscripten.git", :branch => "incoming"
 
     resource "fastcomp" do
-      url "https://github.com/kripken/emscripten-fastcomp.git", :branch => "master"
+      url "https://github.com/kripken/emscripten-fastcomp.git", :branch => "incoming"
     end
 
     resource "fastcomp-clang" do
-      url "https://github.com/kripken/emscripten-fastcomp-clang.git", :branch => "master"
+      url "https://github.com/kripken/emscripten-fastcomp-clang.git", :branch => "incoming"
     end
   end
 
-  needs :cxx11
-
-  depends_on "python@2"
   depends_on "cmake" => :build
   depends_on "node"
-  depends_on "closure-compiler" => :optional
+  depends_on "python@2"
   depends_on "yuicompressor"
+  depends_on "closure-compiler" => :optional
+
+  needs :cxx11
 
   def install
     ENV.cxx11
@@ -90,7 +91,7 @@ class Emscripten < Formula
       #{opt_libexec}/llvm/bin
     and comment out BINARYEN_ROOT
     in ~/.emscripten after running `emcc` for the first time.
-    EOS
+  EOS
   end
 
   test do

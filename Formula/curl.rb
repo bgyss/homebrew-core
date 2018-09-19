@@ -1,15 +1,16 @@
 class Curl < Formula
   desc "Get a file from an HTTP, HTTPS or FTP server"
   homepage "https://curl.haxx.se/"
-  url "https://curl.haxx.se/download/curl-7.60.0.tar.bz2"
-  mirror "http://curl.mirror.anstey.ca/curl-7.60.0.tar.bz2"
-  sha256 "897dfb2204bd99be328279f88f55b7c61592216b0542fcbe995c60aa92871e9b"
+  url "https://curl.haxx.se/download/curl-7.61.1.tar.bz2"
+  mirror "http://curl.mirror.anstey.ca/curl-7.61.1.tar.bz2"
+  sha256 "a308377dbc9a16b2e994abd55455e5f9edca4e31666f8f8fcfe7a1a4aea419b9"
 
   bottle do
     cellar :any
-    sha256 "3e5b15b41852490b111ed091d53d717b4c3afadf7257f40d46e9cb868dd2678b" => :high_sierra
-    sha256 "396aef616fc01f5c7f0f4643479e471ad8bf25877944d3c939784d1ba04b8628" => :sierra
-    sha256 "22c9a86ed2d5bd022452e50878b0882156e85d20694989461776029ac269296e" => :el_capitan
+    sha256 "466c569323a76f17b29ce21f6dcc38e0d2575e8f263195c58db20b0cf663d400" => :mojave
+    sha256 "88c61c4bb10839a504f0373cbdfd7b6fda8627506f9f53d92f89f520d63341f8" => :high_sierra
+    sha256 "7876b046aa58db7398d6775aa28ba542838ee6296b7cbfaec611868439f97683" => :sierra
+    sha256 "2d66448ff6604c870365565e7a61eb8e384a67c3146f866e367bc3c893d2641f" => :el_capitan
   end
 
   head do
@@ -43,14 +44,17 @@ class Curl < Formula
   end
 
   depends_on "pkg-config" => :build
-  depends_on "rtmpdump" => :optional
-  depends_on "libssh2" => :optional
   depends_on "c-ares" => :optional
   depends_on "libmetalink" => :optional
+  depends_on "libssh2" => :optional
   depends_on "nghttp2" => :optional
+  depends_on "rtmpdump" => :optional
 
   def install
     system "./buildconf" if build.head?
+
+    # Allow to build on Lion, lowering from the upstream setting of 10.8
+    ENV.append_to_cflags "-mmacosx-version-min=10.7" if MacOS.version <= :lion
 
     args = %W[
       --disable-debug

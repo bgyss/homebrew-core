@@ -1,13 +1,14 @@
 class Teleport < Formula
   desc "Modern SSH server for teams managing distributed infrastructure"
   homepage "https://gravitational.com/teleport"
-  url "https://github.com/gravitational/teleport/archive/v2.5.7.tar.gz"
-  sha256 "26a62a4ae91482d51191f53edde01a93b13e23a257b5336de06e336ed39c8e7e"
+  url "https://github.com/gravitational/teleport/archive/v2.7.4.tar.gz"
+  sha256 "c4fdccde77445ea0d2257c6a1a968705194e66481832d9c3954fb584d38a4296"
 
   bottle do
-    sha256 "7904263a8c1cde8e4e48022b6902f01ae107c1a1b98e978b01bf9807e39f6063" => :high_sierra
-    sha256 "a82724892a7f5918712227fa1057c44a359b19449bbd5ceb1d148eda4f95bab0" => :sierra
-    sha256 "13c7aaff13c2d537eae6ecc0ad333a114413e7288cd3dc2cd8ea403f5a921599" => :el_capitan
+    sha256 "e245a930a88014834bc9a31959a01b80a9826f77fa6c0ede2854c51c2a5b489e" => :mojave
+    sha256 "5b43fafeb907ba25414cea0e000cd61798a6be843dc8e3fe49fe8baa76f90eed" => :high_sierra
+    sha256 "a221894085fdc6a93777e4bd565eb91a17a11ccb97a58d1266c8279c76a72604" => :sierra
+    sha256 "928c2a998495b42e92497eb723ad149c075b33d461277851367136ac3ff29184" => :el_capitan
   end
 
   depends_on "go" => :build
@@ -19,9 +20,6 @@ class Teleport < Formula
     ENV["GOARCH"] = MacOS.prefer_64_bit? ? "amd64" : "386"
     ENV["GOPATH"] = buildpath
     ENV["GOROOT"] = Formula["go"].opt_libexec
-
-    # Reported 21 Feb 2018 https://github.com/gravitational/teleport/issues/1708
-    inreplace "Makefile", "-j 3", "-j 1"
 
     (buildpath/"src/github.com/gravitational/teleport").install buildpath.children
     cd "src/github.com/gravitational/teleport" do

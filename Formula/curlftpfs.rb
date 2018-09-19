@@ -3,7 +3,6 @@ class Curlftpfs < Formula
   homepage "https://curlftpfs.sourceforge.io/"
   url "https://downloads.sourceforge.net/project/curlftpfs/curlftpfs/0.9.2/curlftpfs-0.9.2.tar.gz"
   sha256 "4eb44739c7078ba0edde177bdd266c4cfb7c621075f47f64c85a06b12b3c6958"
-
   head ":pserver:anonymous:@curlftpfs.cvs.sourceforge.net:/cvsroot/curlftpfs", :using => :cvs
 
   bottle do
@@ -14,13 +13,13 @@ class Curlftpfs < Formula
     sha256 "4d610ca926b0698aa25633af0fa5ad1e9352de396f16c7f26e9beff682d4020f" => :yosemite
   end
 
-  depends_on "pkg-config" => :build
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
-  depends_on :x11
-  depends_on :osxfuse
+  depends_on "pkg-config" => :build
   depends_on "glib"
+  depends_on :osxfuse
+  depends_on :x11
 
   def install
     ENV.append "CPPFLAGS", "-D__off_t=off_t"

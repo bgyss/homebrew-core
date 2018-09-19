@@ -1,15 +1,15 @@
 class Arpack < Formula
   desc "Routines to solve large scale eigenvalue problems"
   homepage "https://github.com/opencollab/arpack-ng"
-  url "https://github.com/opencollab/arpack-ng/archive/3.5.0.tar.gz"
-  sha256 "50f7a3e3aec2e08e732a487919262238f8504c3ef927246ec3495617dde81239"
-  revision 2
+  url "https://github.com/opencollab/arpack-ng/archive/3.6.2.tar.gz"
+  sha256 "673c8202de996fd3127350725eb1818e534db4e79de56d5dcee8c00768db599a"
   head "https://github.com/opencollab/arpack-ng.git"
 
   bottle do
-    sha256 "ee8603f51963f07c30adc15b7d6c70dd0a137aa522433daf1fc7807f2eb77d99" => :high_sierra
-    sha256 "44d58367ee3ff51e50f16969fc463c331f87cdf2e77df9bc61ed54677fa9c9af" => :sierra
-    sha256 "155b3c0b91d364b5d48e1aae52229f8e624676f0a6840b6f3746100c99f26d67" => :el_capitan
+    sha256 "7f0acd80df8dea5511af097c98b34e8c2d91770011e6a7a81ad9971a8922b9e8" => :mojave
+    sha256 "9a34eecb233b2d3ad6d397ea4ab9b6588bf75a99d2557415060937e48875432c" => :high_sierra
+    sha256 "87c8fe199cb780dc38719680b0242ff480d1f523dba54939be8d38ce52422e76" => :sierra
+    sha256 "940bb3597599ce0620b73363dddc9bdde122ec84ede13ae89812318e1965c33c" => :el_capitan
   end
 
   option "with-mpi", "Enable parallel support"
@@ -19,8 +19,8 @@ class Arpack < Formula
   depends_on "libtool" => :build
 
   depends_on "gcc" # for gfortran
-  depends_on "veclibfort"
   depends_on "open-mpi" if build.with? "mpi"
+  depends_on "veclibfort"
 
   def install
     args = %W[ --disable-dependency-tracking

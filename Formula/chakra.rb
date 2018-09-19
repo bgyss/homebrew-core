@@ -1,27 +1,44 @@
 class Chakra < Formula
   desc "The core part of the JavaScript engine that powers Microsoft Edge"
   homepage "https://github.com/Microsoft/ChakraCore"
-  url "https://github.com/Microsoft/ChakraCore/archive/v1.8.4.tar.gz"
-  sha256 "1a51bdd4e3f5d363b3f68bf947f114a4822ab6c45d062df5ab2050f76944fb56"
+  url "https://github.com/Microsoft/ChakraCore/archive/v1.11.0.tar.gz"
+  sha256 "f76a775630cf4e2a6132ef77839b7b2a28ba36adbbd86dd24a806bf7dc176538"
 
   bottle do
     cellar :any
-    sha256 "34ceb0ef3e31c8d79695ca819bd40eb22c4ad13716dc05864f9ebfbbb2c1e492" => :high_sierra
-    sha256 "d39d06650bb49066d9cfda593ea6066b5c1449bd689e9040b40094a075fe9472" => :sierra
-    sha256 "808344e21bcb5c58a88989a8f9779546eabd42b40336f29da04a06677f52d28c" => :el_capitan
+    sha256 "4d8d0b542398ca8a510374e4cb6702f1e9bbc0533cacf589088a6b312caca879" => :mojave
+    sha256 "e7f1fa4ced218d0069e019358e63394ff0515f4489bcd74c49d45351e15ce7f0" => :high_sierra
+    sha256 "fc1ad91a954263720f3fa0d47e367208a4d7791bf58d922e6dc40f5de0cae72e" => :sierra
+    sha256 "3f6ee063e19dc68ae05df4476b12272cc170369bec5ec152b3bded2b7cf7c89b" => :el_capitan
   end
 
   depends_on "cmake" => :build
   depends_on "icu4c"
 
+  # Teach the build script to recognise LLVM 10+/Clang 1000 as valid.
+  # Merged upstream but not yet in 1.11.0; check again next release.
+  patch do
+    url "https://github.com/Microsoft/ChakraCore/commit/559d432087ea9f6ff92574b618194d7a06d12c41.patch?full_index=1"
+    sha256 "05b80e18a3e70f33ee7442a9c2b236c71e74970ba35b25817147e5e0b6ccd140"
+  end
+
   def install
-    system "./build.sh", "--lto-thin",
-                         "--static",
-                         "--icu=#{Formula["icu4c"].opt_include}",
-                         "--extra-defines=U_USING_ICU_NAMESPACE=1", # icu4c 61.1 compatability
-                         "-j=#{ENV.make_jobs}",
-                         "-y"
+    args = [
+      "--lto-thin",
+      "--icu=#{Formula["icu4c"].opt_include}",
+      "--extra-defines=U_USING_ICU_NAMESPACE=1", # icu4c 61.1 compatability
+      "-j=#{ENV.make_jobs}",
+      "-y",
+    ]
+
+    # Build dynamically for the shared library
+    system "./build.sh", *args
+    # Then statically to get a usable binary
+    system "./build.sh", "--static", *args
+
     bin.install "out/Release/ch" => "chakra"
+    include.install Dir["out/Release/include/*"]
+    lib.install "out/Release/libChakraCore.dylib"
   end
 
   test do

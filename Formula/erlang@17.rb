@@ -3,10 +3,10 @@ class ErlangAT17 < Formula
   homepage "https://www.erlang.org/"
   url "https://github.com/erlang/otp/archive/OTP-17.5.6.9.tar.gz"
   sha256 "70d9d0a08969f4c51c78088f8c6b7da22a4806b1fd258a9fff1408f56553f378"
-  head "https://github.com/erlang/otp.git", :branch => "maint-17"
 
   bottle do
     cellar :any
+    sha256 "c04320e6c42fe2116cd0bd52cfd8d4b4c9de9af874b59a91455184c93935576d" => :mojave
     sha256 "de3143035b8e4861f90f3cdd2e6a518d97bc17f7b1087948026b99bc36b781fe" => :high_sierra
     sha256 "819a566e39049cb521e3a26f39746258d333acd4ce9bc91eff2dc8969905f2fc" => :sierra
     sha256 "e4faf6f98903c5dd7fa4894f7a61f722101119572f6d32ab9000fa47332f148d" => :el_capitan
@@ -25,8 +25,8 @@ class ErlangAT17 < Formula
   depends_on "libtool" => :build
   depends_on "openssl"
   depends_on "unixodbc" if MacOS.version >= :mavericks
-  depends_on "fop" => :optional # enables building PDF docs
   depends_on "wxmac" => :recommended # for GUI apps like observer
+  depends_on "fop" => :optional # enables building PDF docs
 
   # Erlang will crash on macOS 10.13 any time the crypto lib is used.
   # The Erlang team has an open PR for the patch but it needs to be applied to
@@ -109,7 +109,7 @@ class ErlangAT17 < Formula
       #{opt_lib}/erlang/man
 
     Access them with `erl -man`, or add this directory to MANPATH.
-    EOS
+  EOS
   end
 
   test do

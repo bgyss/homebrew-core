@@ -1,38 +1,25 @@
 class Nsd < Formula
   desc "Name server daemon"
   homepage "https://www.nlnetlabs.nl/projects/nsd/"
-  url "https://www.nlnetlabs.nl/downloads/nsd/nsd-4.1.21.tar.gz"
-  sha256 "7858b934a07e1582079d7e724b05855380416b7fd68cdaeeca16305bd66bd2bd"
+  url "https://www.nlnetlabs.nl/downloads/nsd/nsd-4.1.24.tar.gz"
+  sha256 "4fb687c8e494610ad8692a127ac101ed73df851142a42766c33de06e54449311"
 
   bottle do
-    sha256 "2a56c4ddbffaeda4ea36b7580fb6f49a4dc2723285bebc8b0e824b1a5f76b8d0" => :high_sierra
-    sha256 "888fadf45333a15ab8e890f48329d9114cfdf5c495283f498704464016be97e8" => :sierra
-    sha256 "314eb13262850eabe0d7a736d09ff2fd6c5b3b72e64abc869646f2c24adab040" => :el_capitan
+    sha256 "e0dec26dde18a5b5f1cee25e60db7231a61f3fe7302890977569782768f93097" => :mojave
+    sha256 "ef0ff89248877b6653322d3290897f885cb8d4b48d6eb248acfc8f2d06d56c47" => :high_sierra
+    sha256 "762e0ca75b35d762a64149b9e9f748fdd9c3190ccad497643388b9b7f36d3a91" => :sierra
+    sha256 "1e5bf01ae719b8588c92d56b59a6d8edab91671f2f38d6c2ddc128220b4d86dc" => :el_capitan
   end
-
-  option "with-root-server", "Allow NSD to run as a root name server"
-  option "with-bind8-stats", "Enable BIND8-like NSTATS & XSTATS"
-  option "with-ratelimit", "Enable rate limiting"
-  option "with-zone-stats", "Enable per-zone statistics"
 
   depends_on "libevent"
   depends_on "openssl"
 
   def install
-    args = %W[
-      --prefix=#{prefix}
-      --sysconfdir=#{etc}
-      --localstatedir=#{var}
-      --with-libevent=#{Formula["libevent"].opt_prefix}
-      --with-ssl=#{Formula["openssl"].opt_prefix}
-    ]
-
-    args << "--enable-root-server" if build.with? "root-server"
-    args << "--enable-bind8-stats" if build.with? "bind8-stats"
-    args << "--enable-ratelimit" if build.with? "ratelimit"
-    args << "--enable-zone-stats" if build.with? "zone-stats"
-
-    system "./configure", *args
+    system "./configure", "--prefix=#{prefix}",
+                          "--sysconfdir=#{etc}",
+                          "--localstatedir=#{var}",
+                          "--with-libevent=#{Formula["libevent"].opt_prefix}",
+                          "--with-ssl=#{Formula["openssl"].opt_prefix}"
     system "make", "install"
   end
 

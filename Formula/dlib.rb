@@ -1,22 +1,22 @@
 class Dlib < Formula
   desc "C++ library for machine learning"
   homepage "http://dlib.net/"
-  url "http://dlib.net/files/dlib-19.12.tar.bz2"
-  sha256 "e6a9a20e8350b237e0bc0a8dbc6cb75714f8358e86e7964b5ad8b551f6eb8fef"
+  url "http://dlib.net/files/dlib-19.15.tar.bz2"
+  sha256 "5340eeaaea7dd6d93d55e7a7d2fdb1f854a77b75f66049354db53671a202c11d"
   head "https://github.com/davisking/dlib.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "917770d3e39e931557813077c9d952d012a792a24c6a659ad43452de5cac0113" => :high_sierra
-    sha256 "05c38de8edf52c3e2ad60c5e0e176f0702c300c739abdf0baaf0c6570f0bca6f" => :sierra
-    sha256 "3bd99bdd8253b71dc4cabd6c173e3839593227a1af810327f2b125ab39aa7b25" => :el_capitan
+    sha256 "c349d2eed8144a3b0faacc7d5bf461034f5ff0217da080cd72c852475f049fb5" => :mojave
+    sha256 "b46587048748fd3612b11ad947af43da6fa5a56b3b7b49795eba6473d52093a2" => :high_sierra
+    sha256 "f41623ee7575269bb09123a23b46795979a5b2b1e74cdca37c24341dd5858a3a" => :sierra
+    sha256 "828d6e762e3c39c4efff6d7b5f32da406bac2d8bc710ebef791b728e3d27f06f" => :el_capitan
   end
-
-  depends_on :macos => :el_capitan # needs thread-local storage
 
   depends_on "cmake" => :build
   depends_on "jpeg"
   depends_on "libpng"
+  depends_on :macos => :el_capitan # needs thread-local storage
   depends_on "openblas" => :optional
   depends_on :x11 => :optional
 
@@ -27,6 +27,12 @@ class Dlib < Formula
 
     args = std_cmake_args + %w[-DDLIB_USE_BLAS=ON -DDLIB_USE_LAPACK=ON]
     args << "-DDLIB_NO_GUI_SUPPORT=ON" if build.without? "x11"
+    args << "-DUSE_SSE2_INSTRUCTIONS=ON" # SSE2 is present on all modern macOS hardware
+
+    unless build.bottle?
+      args << "-DUSE_AVX_INSTRUCTIONS=ON" if Hardware::CPU.avx?
+      args << "-DUSE_SSE4_INSTRUCTIONS=ON" if Hardware::CPU.sse4?
+    end
 
     if build.with? "openblas"
       args << "-Dcblas_lib=#{Formula["openblas"].opt_lib}/libopenblas.dylib"

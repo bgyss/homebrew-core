@@ -1,16 +1,16 @@
 class Root < Formula
   desc "Object oriented framework for large scale data analysis"
   homepage "https://root.cern.ch"
-  url "https://root.cern.ch/download/root_v6.12.06.source.tar.gz"
-  version "6.12.06"
-  sha256 "aedcfd2257806e425b9f61b483e25ba600eb0ea606e21262eafaa9dc745aa794"
-  revision 3
+  url "https://root.cern.ch/download/root_v6.14.04.source.tar.gz"
+  version "6.14.04"
+  sha256 "463ec20692332a422cfb5f38c78bedab1c40ab4d81be18e99b50cf9f53f596cf"
   head "http://root.cern.ch/git/root.git"
 
   bottle do
-    sha256 "ed8481c2e70cfc1e8b3c6db4abb1c5183411bacd1a0ef85d43f2b74f78f0c778" => :high_sierra
-    sha256 "114e5f3770b197f3167ef6fe39f3e59ff3c9e32357c6e506f3ea99390ab8f546" => :sierra
-    sha256 "6ab46e6d06c27b9719baa53857696c97d445b605fcda3a80f3e1ebb893519c99" => :el_capitan
+    sha256 "503f8bc262b408cbd5fc944b50bd4d86808266db073312b367bd0f553679a42d" => :mojave
+    sha256 "5c541f80bc3f6df5a0c613d747024a593f0ce238617b9dc2053ca8d65fa5ff95" => :high_sierra
+    sha256 "a1f202c443dbe01d43269d29887fde412eaea9b2d83b5ff2ce08bf4d8c26ce5a" => :sierra
+    sha256 "9cedd1dc275ae988976e8be78afe7cfa12471d4e501c772d8549082807ea0651" => :el_capitan
   end
 
   depends_on "cmake" => :build
@@ -27,6 +27,18 @@ class Root < Formula
   depends_on "xz" # For LZMA.
   depends_on "python" => :recommended
   depends_on "python@2" => :optional
+
+  # https://github.com/Homebrew/homebrew-core/issues/30726
+  # strings libCling.so | grep Xcode:
+  #  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1
+  #  /Applications/Xcode.app/Contents/Developer
+  pour_bottle? do
+    reason "The bottle hardcodes locations inside Xcode.app"
+    satisfy do
+      MacOS::Xcode.installed? &&
+        MacOS::Xcode.prefix.to_s.include?("/Applications/Xcode.app/")
+    end
+  end
 
   needs :cxx11
 
@@ -48,13 +60,16 @@ class Root < Formula
       -Dgnuinstall=ON
       -DCMAKE_INSTALL_ELISPDIR=#{elisp}
       -Dbuiltin_freetype=ON
+      -Dbuiltin_cfitsio=OFF
       -Ddavix=ON
+      -Dfitsio=OFF
       -Dfftw3=ON
       -Dfortran=ON
       -Dgdml=ON
       -Dmathmore=ON
       -Dminuit2=ON
       -Dmysql=OFF
+      -Dpgsql=OFF
       -Droofit=ON
       -Dssl=ON
       -Dimt=ON
@@ -123,7 +138,7 @@ class Root < Formula
       pushd #{HOMEBREW_PREFIX} >/dev/null; . bin/thisroot.sh; popd >/dev/null
     For csh/tcsh users:
       source #{HOMEBREW_PREFIX}/bin/thisroot.csh
-    EOS
+  EOS
   end
 
   test do

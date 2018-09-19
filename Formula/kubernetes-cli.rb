@@ -2,18 +2,19 @@ class KubernetesCli < Formula
   desc "Kubernetes command-line interface"
   homepage "https://kubernetes.io/"
   url "https://github.com/kubernetes/kubernetes.git",
-      :tag => "v1.10.2",
-      :revision => "81753b10df112992bf51bbc2c2f85208aad78335"
+      :tag => "v1.11.3",
+      :revision => "a4529464e4629c21224b3d52edfe0ea91b072862"
   head "https://github.com/kubernetes/kubernetes.git"
 
   bottle do
-    sha256 "2b821f0003cda3345d098da9d854777296bacb9cf4b7cf381e1bafdbd18f9b7a" => :high_sierra
-    sha256 "b2a8b815c45aca284538f45a2705bf8dc74c05a217aa5e7a0c3c98db2d48ee26" => :sierra
-    sha256 "ac6ea67a29a7e1b3581538c752097084734af77807831ed787084b081542a49f" => :el_capitan
+    cellar :any_skip_relocation
+    sha256 "d00a240d03a1de64df9d76df58855385638d0abdfdad09d2f88c2140a6178d75" => :mojave
+    sha256 "e1859f9f893237aa977be328846481b362e147ae92c2cde3e65a7d445b02dae9" => :high_sierra
+    sha256 "5752d5baff35437176ac169469fdc27e2bcb740da74ebbf3191ddbb009c23941" => :sierra
+    sha256 "67e7ad04098e52028d5d9e8f32fe9c530778be555842c6cf1ad39839945d312b" => :el_capitan
   end
 
-  # kubernetes-cli will not support go1.10 until version 1.11.x
-  depends_on "go@1.9" => :build
+  depends_on "go" => :build
 
   def install
     ENV["GOPATH"] = buildpath

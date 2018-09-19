@@ -1,6 +1,6 @@
 class Mapserver < Formula
   desc "Publish spatial data and interactive mapping apps to the web"
-  homepage "http://mapserver.org/"
+  homepage "https://mapserver.org/"
   url "https://download.osgeo.org/mapserver/mapserver-7.0.7.tar.gz"
   sha256 "37a8c3008328bae0fea05109d6d544a3284f756a23956e8a2f5ec10a6b5fef67"
   revision 2
@@ -17,19 +17,19 @@ class Mapserver < Formula
   option "with-php", "Build PHP MapScript module"
   option "with-postgresql", "Build support for PostgreSQL as a data source"
 
-  depends_on "pkg-config" => :build
   depends_on "cmake" => :build
+  depends_on "pkg-config" => :build
   depends_on "swig" => :build
+  depends_on "fcgi" if build.with? "fastcgi"
   depends_on "freetype"
-  depends_on "libpng"
-  depends_on "giflib"
   depends_on "gd"
-  depends_on "proj"
   depends_on "gdal"
+  depends_on "giflib"
+  depends_on "libpng"
+  depends_on "proj"
+  depends_on "cairo" => :optional
   depends_on "geos" => :optional
   depends_on "postgresql" => :optional unless MacOS.version >= :lion
-  depends_on "cairo" => :optional
-  depends_on "fcgi" if build.with? "fastcgi"
 
   def install
     # Harfbuzz support requires fribidi and fribidi support requires
@@ -105,7 +105,7 @@ class Mapserver < Formula
         extension="#{opt_lib}/php/extensions/php_mapscript.so"
       * Execute "php -m"
       * You should see MapScript in the module list
-    EOS
+  EOS
   end
 
   test do

@@ -1,30 +1,29 @@
 class Graphicsmagick < Formula
   desc "Image processing tools collection"
   homepage "http://www.graphicsmagick.org/"
-  url "https://downloads.sourceforge.net/project/graphicsmagick/graphicsmagick/1.3.29/GraphicsMagick-1.3.29.tar.xz"
-  sha256 "e18df46a6934c8c12bfe274d09f28b822f291877f9c81bd9a506f879a7610cd4"
+  url "https://downloads.sourceforge.net/project/graphicsmagick/graphicsmagick/1.3.30/GraphicsMagick-1.3.30.tar.xz"
+  sha256 "d965e5c6559f55eec76c20231c095d4ae682ea0cbdd8453249ae8771405659f1"
   head "http://hg.code.sf.net/p/graphicsmagick/code", :using => :hg
 
   bottle do
-    sha256 "1e5285484c31f3f5a0edfdb5457dddf114d5ef28d45e1e92c78494c07de5d621" => :high_sierra
-    sha256 "c619357a47ac6dd35e16c13f053bc79399942d98a88ffbf278d5d7903972eeea" => :sierra
-    sha256 "e95c6f9bc95dbb529a1bca6d88a9b2d0c0fc595632b6629e878e9d39d7cd644e" => :el_capitan
+    sha256 "cdaf146d656352ce0cbca35f097f55065499340e9383a807b83d4390a46fe531" => :mojave
+    sha256 "701f65ee9855e57d1801bcb9e506cfe4ea559e0d91d80a2d3353114f567e1b05" => :high_sierra
+    sha256 "16d2ca5041f489588fe34683c114190a3f7aeaf7ec9e75eab1f69b69f04d2850" => :sierra
+    sha256 "3bfb42383538f63bb9ede1efe7b74517283e8f23aeb37727da8d747dc7bc9165" => :el_capitan
   end
 
-  option "without-magick-plus-plus", "disable build/install of Magick++"
-  option "without-svg", "Compile without svg support"
   option "with-perl", "Build PerlMagick; provides the Graphics::Magick module"
 
   depends_on "pkg-config" => :build
+  depends_on "freetype"
+  depends_on "jasper"
+  depends_on "jpeg"
+  depends_on "libpng"
+  depends_on "libtiff"
   depends_on "libtool"
-  depends_on "jpeg" => :recommended
-  depends_on "libpng" => :recommended
-  depends_on "libtiff" => :recommended
-  depends_on "freetype" => :recommended
-  depends_on "jasper" => :recommended
-  depends_on "little-cms2" => :optional
-  depends_on "libwmf" => :optional
   depends_on "ghostscript" => :optional
+  depends_on "libwmf" => :optional
+  depends_on "little-cms2" => :optional
   depends_on "webp" => :optional
   depends_on :x11 => :optional
 
@@ -44,12 +43,9 @@ class Graphicsmagick < Formula
 
     args << "--without-gslib" if build.without? "ghostscript"
     args << "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts" if build.without? "ghostscript"
-    args << "--without-magick-plus-plus" if build.without? "magick-plus-plus"
     args << "--with-perl" if build.with? "perl"
     args << "--with-webp=no" if build.without? "webp"
     args << "--without-x" if build.without? "x11"
-    args << "--without-ttf" if build.without? "freetype"
-    args << "--without-xml" if build.without? "svg"
     args << "--without-lcms2" if build.without? "little-cms2"
     args << "--without-wmf" if build.without? "libwmf"
 

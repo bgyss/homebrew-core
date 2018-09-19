@@ -1,22 +1,24 @@
 class Uhd < Formula
   desc "Hardware driver for all USRP devices"
   homepage "https://files.ettus.com/manual/"
-  url "https://github.com/EttusResearch/uhd/archive/v3.11.1.0.tar.gz"
-  sha256 "9c6347584e778c5dcdd2dceb296b3e39f3374e38565c1133a88a68a7cac1ec41"
+  url "https://github.com/EttusResearch/uhd/archive/v3.13.0.1.tar.gz"
+  sha256 "ee5475e7ffbb14441b323cc2fc73950cde2326fd00772dab62efa677f27a97bf"
+  revision 1
   head "https://github.com/EttusResearch/uhd.git"
 
   bottle do
-    sha256 "4f1a61f8046c2bded319e840b2683affc3e845d213d1b285b81762ca66d0ff3b" => :high_sierra
-    sha256 "354d3192c75f8731c1021f325fe4824dc8723691a4c974084665144fdc480477" => :sierra
-    sha256 "fc49d31f2178bccd011c0fdd23ece3a0c438ef56c5c36a05d9a31a38d3fc6ab0" => :el_capitan
+    rebuild 1
+    sha256 "91caa706bb5a1b05e28b65c76dce4510d55e41dcc401a56f91821729e911ea8a" => :mojave
+    sha256 "2a8b15cc1c65ec951f7da9afea0eb716b126d40681cc490ace03c8ab2b25add2" => :high_sierra
+    sha256 "cd1b2a157c4f822be838eae6d047308f7907abac9b72726f9b2ef0dfce06483e" => :sierra
+    sha256 "2593c3ebd3901a0d146286b20f8c43207e8a309beca5f7a926af9032ac17ea51" => :el_capitan
   end
 
   depends_on "cmake" => :build
+  depends_on "doxygen" => :build
   depends_on "boost"
   depends_on "libusb"
   depends_on "python@2"
-  depends_on "doxygen" => [:build, :optional]
-  depends_on "gpsd" => :optional
 
   resource "Mako" do
     url "https://files.pythonhosted.org/packages/eb/f3/67579bb486517c0d49547f9697e36582cd19dafb5df9e687ed8e22de57fa/Mako-1.0.7.tar.gz"

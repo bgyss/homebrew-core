@@ -13,9 +13,9 @@ class Exim < Formula
   deprecated_option "support-maildir" => "with-maildir"
   option "with-maildir", "Support delivery in Maildir format"
 
-  depends_on "pcre"
   depends_on "berkeley-db@4"
   depends_on "openssl"
+  depends_on "pcre"
 
   def install
     cp "src/EDITME", "Local/Makefile"
@@ -82,14 +82,14 @@ class Exim < Formula
       exit 1
       ;;
     esac
-    EOS
+  EOS
   end
 
   def caveats; <<~EOS
     Start with:
       exim_ctl start
     Don't forget to run it as root to be able to bind port 25.
-    EOS
+  EOS
   end
 
   test do

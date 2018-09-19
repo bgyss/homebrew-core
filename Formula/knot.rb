@@ -1,36 +1,32 @@
 class Knot < Formula
   desc "High-performance authoritative-only DNS server"
   homepage "https://www.knot-dns.cz/"
-  url "https://secure.nic.cz/files/knot-dns/knot-2.6.7.tar.xz"
-  sha256 "1c2a004b05c161f7b36d5eeccebd9d4cdf60aa09930a7cc766514e468ca92243"
+  url "https://secure.nic.cz/files/knot-dns/knot-2.7.2.tar.xz"
+  sha256 "cb70b2ee1c7ecbaad8774a1e0c449a68c6a6f7c9d60595524f003201d6e38431"
 
   bottle do
-    sha256 "e48a5e36c113e359b7d4970a253c77543fca0e26ee93409b70e5cee10b7e00fc" => :high_sierra
-    sha256 "145e7bc0c2cd2a8830a41441d7d5d528356852bc96f94e36fbc9c69705bfe346" => :sierra
-    sha256 "4c8f040299e3c1b8a9c3fb66f3f4647665bc74cf686dd193a173a2c8d4b00051" => :el_capitan
+    sha256 "135a46329ede38410c4ed016f553db2d839174912758a2c6befa7d4350bbb5a1" => :mojave
+    sha256 "aee994511ac0cd229f9967addc33de1506f8125aedf22a9545b101fca2074df0" => :high_sierra
+    sha256 "bb53f92b3b1ed5c65f0bfe0339a4f4003776efb6b2c34bc7a67615dc06402961" => :sierra
+    sha256 "1aed5ce5f2847b6a8b22e086879142e5c19dd4bd68428dbbcc9a14a7c9653ede" => :el_capitan
   end
 
   head do
     url "https://gitlab.labs.nic.cz/knot/knot-dns.git"
 
-    depends_on "automake" => :build
     depends_on "autoconf" => :build
+    depends_on "automake" => :build
     depends_on "libtool" => :build
   end
 
-  # due to AT_REMOVEDIR
-  depends_on :macos => :yosemite
-
   depends_on "pkg-config" => :build
   depends_on "sphinx-doc" => :build
-  depends_on "gnutls"
-  depends_on "jansson"
-  depends_on "libidn"
-  depends_on "nettle"
-  depends_on "openssl"
-  depends_on "userspace-rcu"
-  depends_on "protobuf-c"
   depends_on "fstrm"
+  depends_on "gnutls"
+  depends_on "libidn"
+  depends_on :macos => :yosemite # due to AT_REMOVEDIR
+  depends_on "protobuf-c"
+  depends_on "userspace-rcu"
 
   def install
     system "autoreconf", "-fvi" if build.head?
@@ -40,7 +36,7 @@ class Knot < Formula
                           "--with-storage=#{var}/knot",
                           "--with-rundir=#{var}/run/knot",
                           "--prefix=#{prefix}",
-                          "--with-bash-completions=#{bash_completion}",
+                          "--with-module-dnstap",
                           "--enable-dnstap"
 
     inreplace "samples/Makefile", "install-data-local:", "disable-install-data-local:"
@@ -73,7 +69,7 @@ class Knot < Formula
     template:
       - id: "default"
         storage: "#{var}/knot"
-    EOS
+  EOS
   end
 
   plist_options :startup => true
@@ -103,7 +99,7 @@ class Knot < Formula
       <string>#{var}/log/knot.log</string>
     </dict>
     </plist>
-    EOS
+  EOS
   end
 
   test do

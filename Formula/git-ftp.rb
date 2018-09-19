@@ -3,23 +3,24 @@ class GitFtp < Formula
   homepage "https://git-ftp.github.io/"
   url "https://github.com/git-ftp/git-ftp/archive/1.5.1.tar.gz"
   sha256 "8cca25e1f718b987ea22ec05c7d72522f21cacedd00a8a0e827f87cd68e101f0"
-  revision 1
+  revision 3
   head "https://github.com/git-ftp/git-ftp.git", :branch => "develop"
 
   bottle do
     cellar :any
-    sha256 "0ff2acffa0b98ffd12599040d7d3f7684c0cbf4252863897c7f1bd7d162a3127" => :high_sierra
-    sha256 "8c3ae60cabd15bf7fe8f5d0e978cedb62f138617cdb291449970530cdce2eb7d" => :sierra
-    sha256 "8d879558e0cba597e54565aa5c4a545c8657ee71032dbfd18425f46572ac661c" => :el_capitan
+    sha256 "ad2bc34727cc42e6cd7bbb82f95bbcfe4fa715efe8e090bcd1d9c71ddbe31b89" => :mojave
+    sha256 "fea10bb50037716d6b50933119e8c496f74cb188e94811114516ad1f579c7e4e" => :high_sierra
+    sha256 "a07c7e4ae57c95f718de94600a270f0d4377f7b0476ebc59d59e895abf55cdd8" => :sierra
+    sha256 "ceb3c1d012fd3d196d72a45c131eea5edb0013757830700011d4228d0c25174d" => :el_capitan
   end
 
   depends_on "pandoc" => :build
   depends_on "libssh2"
 
   resource "curl" do
-    url "https://curl.haxx.se/download/curl-7.60.0.tar.bz2"
-    mirror "https://curl.askapache.com/download/curl-7.60.0.tar.bz2"
-    sha256 "897dfb2204bd99be328279f88f55b7c61592216b0542fcbe995c60aa92871e9b"
+    url "https://curl.haxx.se/download/curl-7.61.1.tar.bz2"
+    mirror "https://curl.askapache.com/download/curl-7.61.1.tar.bz2"
+    sha256 "a308377dbc9a16b2e994abd55455e5f9edca4e31666f8f8fcfe7a1a4aea419b9"
   end
 
   def install

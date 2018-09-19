@@ -1,19 +1,20 @@
 class Arangodb < Formula
   desc "The Multi-Model NoSQL Database"
   homepage "https://www.arangodb.com/"
-  url "https://download.arangodb.com/Source/ArangoDB-3.3.8.tar.gz"
-  sha256 "ef8a5fbdecea59d49ced57c8d7b0f04464d25b9a38c2bbb03e20b51595555204"
+  url "https://download.arangodb.com/Source/ArangoDB-3.3.15.tar.gz"
+  sha256 "5284f7b634770c44d4cd1d5e0f5a99df41dd3c86b2f6c4274768b7b1f252aa0a"
   head "https://github.com/arangodb/arangodb.git", :branch => "unstable"
 
   bottle do
-    sha256 "279554d96c5a4f3e4016ee1b6e2642c1a73bb88cbe2ebcd26c972e087d32e2bb" => :high_sierra
-    sha256 "dc584c8db6c143153ad0b99b05c78e7722e1c958e865364aa348485a703fbce8" => :sierra
-    sha256 "664d3e90a8c1e29de94e35b5ec5e5b5a6f6908133e6aca32e4364cf35c0d024b" => :el_capitan
+    sha256 "fa10003eaf92a8cf760d35b2e9681afd9913287f2957155f045c1afd3c841c7c" => :mojave
+    sha256 "e671281f027604434a948534557bc22fb7d3284951c2b56206fbde8fc2ea451d" => :high_sierra
+    sha256 "3c962e246dbe003c31a7a1e4e34fe8ed34efa6356e536228cfcfab5cba3cf867" => :sierra
+    sha256 "99ec338ddd1ee96abfef7a2a1d833114d42b3b9b2cb4d0d22bdf6be54f9164c1" => :el_capitan
   end
 
-  depends_on :macos => :yosemite
   depends_on "cmake" => :build
   depends_on "go" => :build
+  depends_on :macos => :yosemite
   depends_on "openssl"
 
   needs :cxx11
@@ -81,7 +82,7 @@ class Arangodb < Formula
         <true/>
       </dict>
     </plist>
-    EOS
+  EOS
   end
 
   test do

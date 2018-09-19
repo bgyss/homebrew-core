@@ -4,7 +4,6 @@ class Pce < Formula
   url "http://www.hampa.ch/pub/pce/pce-0.2.2.tar.gz"
   sha256 "a8c0560fcbf0cc154c8f5012186f3d3952afdbd144b419124c09a56f9baab999"
   revision 1
-
   head "git://git.hampa.ch/pce.git"
 
   bottle do
@@ -21,8 +20,8 @@ class Pce < Formula
     sha256 "aaad3db24b5fabbd308afbb8d2f242236b8abf7d48b010f726a4367f16ec2681"
   end
 
-  depends_on "sdl"
   depends_on "readline"
+  depends_on "sdl"
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

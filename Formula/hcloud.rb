@@ -1,24 +1,25 @@
 class Hcloud < Formula
   desc "Command-line interface for Hetzner Cloud"
   homepage "https://github.com/hetznercloud/cli"
-  url "https://github.com/hetznercloud/cli/archive/v1.4.0.tar.gz"
-  sha256 "a09c07c2d081ab7493bc402246bd09d486f9fa5241a67e31e00564506c410507"
+  url "https://github.com/hetznercloud/cli/archive/v1.8.0.tar.gz"
+  sha256 "3745561c43816a8d01f8c4a8ec5d64de3d5da1501537425813ccf294e64b38ea"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "5deffd6efe224636362ba5e995df57b3c4ec85065c15f8a55261608a7e590501" => :high_sierra
-    sha256 "72a32be135be4719a5ec50c1bb8762d1c3648c7f6a5a814b234b2d69c7341300" => :sierra
-    sha256 "eb41b7bd5cc58860c20b4d7e06d93e4d2d9ec7fac6bc070c2e401a488098a3a8" => :el_capitan
+    sha256 "b73701022c22c3c884677a39ec93cffb071ba712f48f53cf705d92b649d2ad2e" => :mojave
+    sha256 "6b328834a8e30a7741c5c927a55b2fdbd6ccedb58ade9c9ca36ffd4ae4ce98a5" => :high_sierra
+    sha256 "efa71d4f60df23efadf229a848c9ceca9d6e338b6db7737b0a650774e043fb81" => :sierra
+    sha256 "a40c819c6b02499195e28db85664962404165acfbdb8a26816c88b05db87c28b" => :el_capitan
   end
 
   depends_on "go" => :build
 
   def install
-    ENV["GOPATH"] = buildpath
+    ENV["GOPATH"] = HOMEBREW_CACHE/"go_cache"
     (buildpath/"src/github.com/hetznercloud/cli").install buildpath.children
 
     cd "src/github.com/hetznercloud/cli" do
-      ldflags = "-w -X github.com/hetznercloud/cli.Version=v#{version}"
+      ldflags = "-w -X github.com/hetznercloud/cli/cli.Version=v#{version}"
       system "go", "build", "-o", bin/"hcloud", "-ldflags", ldflags,
                    "./cmd/hcloud"
       prefix.install_metafiles
@@ -42,5 +43,6 @@ class Hcloud < Formula
     EOS
     assert_match "test", shell_output("#{bin}/hcloud context list")
     assert_match "test", shell_output("#{bin}/hcloud context active")
+    assert_match "hcloud v#{version}", shell_output("#{bin}/hcloud version")
   end
 end

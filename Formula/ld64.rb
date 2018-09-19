@@ -16,17 +16,16 @@ class Ld64 < Formula
   keg_only :provided_by_macos,
     "ld64 is an updated version of the ld shipped by Apple"
 
-  depends_on MaximumMacOSRequirement => :snow_leopard
-
   # Tiger either includes old versions of these headers,
   # or doesn't ship them at all
   depends_on "cctools-headers" => :build
   depends_on "dyld-headers" => :build
   depends_on "libunwind-headers" => :build
+  depends_on MaximumMacOSRequirement => :snow_leopard
   depends_on "openssl"
 
   resource "makefile" do
-    url "https://raw.githubusercontent.com/Homebrew/formula-patches/3b073fca/ld64/Makefile-97", :using => :nounzip
+    url "https://raw.githubusercontent.com/Homebrew/formula-patches/3b073fca/ld64/Makefile-97"
     sha256 "48e3475bd73f9501d17b7d334d3bf319f5664f2d5ab9d13378e37c2519ae2a3a"
   end
 

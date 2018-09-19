@@ -4,20 +4,22 @@ class Imagemagick < Formula
   # Please always keep the Homebrew mirror as the primary URL as the
   # ImageMagick site removes tarballs regularly which means we get issues
   # unnecessarily and older versions of the formula are broken.
-  url "https://dl.bintray.com/homebrew/mirror/imagemagick-7.0.7-35.tar.xz"
-  mirror "https://www.imagemagick.org/download/ImageMagick-7.0.7-35.tar.xz"
-  sha256 "5441583b724f84d5ecd87b9056aa751fb520e5ef26da4b45a8975f1938d4c39d"
+  url "https://dl.bintray.com/homebrew/mirror/imagemagick--7.0.8-11.tar.xz"
+  mirror "https://www.imagemagick.org/download/ImageMagick-7.0.8-11.tar.xz"
+  sha256 "c15f14c054b4fde417e7b82c23950047203f81e582de7f1270cf3bdfa8a38a03"
+  revision 2
   head "https://github.com/ImageMagick/ImageMagick.git"
 
   bottle do
-    sha256 "2e8dc49f210944a1b1abec6fe75f0da3f3f69c7032ac2d2b46c5c2cfded95717" => :high_sierra
-    sha256 "ccdaeea968002a58591582580d23c08c6d139126d96ac98e7907e1daa4bc06cf" => :sierra
-    sha256 "e920698afdc7550463c44858b9f35ef620134b1a180a3fc4b6475561fb30604f" => :el_capitan
+    sha256 "ac3a4c98e2d66029ec651b1a29f5a13011c05d6f089db34ae0acc22a08a03311" => :mojave
+    sha256 "fd6d33cb8b0099d8c2eebc78fecd3a348b93309f4ff45dfa2a74f9058aaaeb36" => :high_sierra
+    sha256 "373389213c553cfe33cbb65a411d994de9c19b79cd03ef5c66545bbb50ede175" => :sierra
+    sha256 "862576f75a3ba912b334994ee7fed20037c15078a7526ca832ddf1c3444fa760" => :el_capitan
   end
 
   option "with-fftw", "Compile with FFTW support"
   option "with-hdri", "Compile with HDRI support"
-  option "with-libde265", "Compile with HEIF support"
+  option "with-libheif", "Compile with HEIF support"
   option "with-opencl", "Compile with OpenCL support"
   option "with-openmp", "Compile with OpenMP support"
   option "with-perl", "Compile with PerlMagick"
@@ -29,31 +31,32 @@ class Imagemagick < Formula
   deprecated_option "enable-hdri" => "with-hdri"
   deprecated_option "with-gcc" => "with-openmp"
   deprecated_option "with-jp2" => "with-openjpeg"
+  deprecated_option "with-libde265" => "with-libheif"
 
   depends_on "pkg-config" => :build
   depends_on "libtool"
   depends_on "xz"
 
+  depends_on "freetype" => :recommended
   depends_on "jpeg" => :recommended
   depends_on "libpng" => :recommended
   depends_on "libtiff" => :recommended
-  depends_on "freetype" => :recommended
 
-  depends_on :x11 => :optional
+  depends_on "fftw" => :optional
   depends_on "fontconfig" => :optional
+  depends_on "ghostscript" => :optional
+  depends_on "libheif" => :optional
+  depends_on "liblqr" => :optional
+  depends_on "librsvg" => :optional
+  depends_on "libwmf" => :optional
   depends_on "little-cms" => :optional
   depends_on "little-cms2" => :optional
-  depends_on "libde265" => :optional
-  depends_on "libwmf" => :optional
-  depends_on "librsvg" => :optional
-  depends_on "liblqr" => :optional
   depends_on "openexr" => :optional
-  depends_on "ghostscript" => :optional
-  depends_on "webp" => :optional
   depends_on "openjpeg" => :optional
-  depends_on "fftw" => :optional
   depends_on "pango" => :optional
   depends_on "perl" => :optional
+  depends_on "webp" => :optional
+  depends_on :x11 => :optional
 
   if build.with? "openmp"
     depends_on "gcc"

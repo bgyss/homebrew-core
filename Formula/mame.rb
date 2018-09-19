@@ -1,28 +1,28 @@
 class Mame < Formula
   desc "Multiple Arcade Machine Emulator"
-  homepage "http://mamedev.org/"
-  url "https://github.com/mamedev/mame/archive/mame0197.tar.gz"
-  version "0.197"
-  sha256 "2ce7d6f79cdad2c904924db0eba90368026b6bc38ab7b0d1cc5792560b2dcedd"
+  homepage "https://mamedev.org/"
+  url "https://github.com/mamedev/mame/archive/mame0199.tar.gz"
+  version "0.199"
+  sha256 "cf4511d6c893e699fd5bc510133aee75c852942321e1c668c9d5802229bec116"
   head "https://github.com/mamedev/mame.git"
 
   bottle do
     cellar :any
-    sha256 "424baa4bebda29b7170988bde29dadd369d95a466b615df8994708435819eb8f" => :high_sierra
-    sha256 "3c8ce25e77c728dd8f9e5bd521d57ac4e3dfdf464cd7f567ddfb813415a756ef" => :sierra
-    sha256 "da822f3b7c96e023492ebc08eaa91da1d71716da92737b92b30c947a87c243a2" => :el_capitan
+    sha256 "61f48dddec9bc5c840a62fb1922d55c1528840bc50717b917fbbdc9a2b72adaa" => :high_sierra
+    sha256 "fe65706b184a13af844ea0036186880cd85c192f32b448b03b31ab17668ed187" => :sierra
+    sha256 "77390e4d5a56ee6db55bc26bb633ec0b4540f3227393bafde9628be68a0313ef" => :el_capitan
   end
 
-  depends_on :macos => :yosemite
   depends_on "pkg-config" => :build
   depends_on "sphinx-doc" => :build
-  depends_on "sdl2"
-  depends_on "jpeg"
   depends_on "flac"
+  depends_on "jpeg"
   depends_on "lua"
-  depends_on "sqlite"
-  depends_on "portmidi"
+  depends_on :macos => :yosemite
   depends_on "portaudio"
+  depends_on "portmidi"
+  depends_on "sdl2"
+  depends_on "sqlite"
   depends_on "utf8proc"
 
   # Need C++ compiler and standard library support C++14.
@@ -36,6 +36,11 @@ class Mame < Formula
 
   def install
     inreplace "scripts/src/osd/sdl.lua", "--static", ""
+
+    # 3rdparty/sol2/sol/compatibility/version.hpp:30:10
+    # fatal error: 'lua.hpp' file not found
+    ENV.append "CPPFLAGS", "-I#{Formula["lua"].opt_include}/lua"
+
     system "make", "USE_LIBSDL=1",
                    "USE_SYSTEM_LIB_EXPAT=1",
                    "USE_SYSTEM_LIB_ZLIB=1",

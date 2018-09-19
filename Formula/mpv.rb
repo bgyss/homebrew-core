@@ -6,19 +6,22 @@ class Mpv < Formula
   head "https://github.com/mpv-player/mpv.git"
 
   bottle do
+    sha256 "c19d5eb5999281e98e2a36f1e44af44f3bf2f91d6b0469388651a81269d0fcce" => :mojave
     sha256 "1dee05ae50b43c059c11c667a2e70b51bccfb373248ad8f877eeef9a8afe7c67" => :high_sierra
     sha256 "9c43d85b504b5edd2cbcf87ed219dc7a75c771b763e66fd64305b93c5070c993" => :sierra
     sha256 "301203ddeb374ecce692a47b59ff8396b63e2f40530f6f82dc037992a53a0ebc" => :el_capitan
   end
 
   option "with-bundle", "Enable compilation of the .app bundle."
+  option "with-lgpl", "Build with LGPLv2.1 or later license"
 
   depends_on "pkg-config" => :build
-  depends_on "python" => :build
+  depends_on "python@2" => :build
 
-  depends_on "libass"
   depends_on "ffmpeg"
+  depends_on "libass"
   depends_on "lua@5.1"
+  depends_on :macos => :mountain_lion
 
   depends_on "jpeg" => :recommended
   depends_on "little-cms2" => :recommended
@@ -37,8 +40,6 @@ class Mpv < Formula
   depends_on "uchardet" => :optional
   depends_on "vapoursynth" => :optional
   depends_on :x11 => :optional
-
-  depends_on :macos => :mountain_lion
 
   resource "docutils" do
     url "https://files.pythonhosted.org/packages/05/25/7b5484aca5d46915493f1fd4ecb63c38c333bd32aa9ad6e19da8d08895ae/docutils-0.13.1.tar.gz"
@@ -63,7 +64,6 @@ class Mpv < Formula
 
     args = %W[
       --prefix=#{prefix}
-      --enable-zsh-comp
       --enable-libmpv-shared
       --enable-html-build
       --enable-lua
@@ -71,7 +71,6 @@ class Mpv < Formula
       --datadir=#{pkgshare}
       --mandir=#{man}
       --docdir=#{doc}
-      --zshdir=#{zsh_completion}
     ]
     args << "--enable-libarchive" if build.with? "libarchive"
     args << "--enable-libbluray" if build.with? "libbluray"
@@ -80,12 +79,19 @@ class Mpv < Formula
     args << "--enable-javascript" if build.with? "mujs"
     args << "--enable-pulse" if build.with? "pulseaudio"
 
+    if build.with? "lgpl"
+      args << "--enable-lgpl"
+    else
+      args << "--enable-zsh-comp"
+      args << "--zshdir=#{zsh_completion}"
+    end
+
     system "./bootstrap.py"
-    system "python3", "waf", "configure", *args
-    system "python3", "waf", "install"
+    system "python", "waf", "configure", *args
+    system "python", "waf", "install"
 
     if build.with? "bundle"
-      system "python3", "TOOLS/osxbundle.py", "build/mpv"
+      system "python", "TOOLS/osxbundle.py", "build/mpv"
       prefix.install "build/mpv.app"
     end
   end

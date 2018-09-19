@@ -1,8 +1,8 @@
 class Gradle < Formula
-  desc "Build system based on the Groovy language"
+  desc "Open-source build automation tool based on the Groovy and Kotlin DSL"
   homepage "https://www.gradle.org/"
-  url "https://services.gradle.org/distributions/gradle-4.7-all.zip"
-  sha256 "203f4537da8b8075e38c036a6d14cb71b1149de5bf0a8f6db32ac2833a1d1294"
+  url "https://services.gradle.org/distributions/gradle-4.10.1-all.zip"
+  sha256 "36bf7ff499223d5139f005822130ccca784c91591b514677fd376eed966c907e"
 
   bottle :unneeded
 

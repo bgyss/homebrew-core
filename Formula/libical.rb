@@ -1,14 +1,14 @@
 class Libical < Formula
   desc "Implementation of iCalendar protocols and data formats"
   homepage "https://libical.github.io/libical/"
-  url "https://github.com/libical/libical/releases/download/v3.0.3/libical-3.0.3.tar.gz"
-  sha256 "5b91eb8ad2d2dcada39d2f81d5e3ac15895823611dc7df91df39a35586f39241"
-  revision 1
+  url "https://github.com/libical/libical/releases/download/v3.0.4/libical-3.0.4.tar.gz"
+  sha256 "72b216e10233c3f60cb06062facf41f3b0f70615e5a60b47f9853341a0d5d145"
 
   bottle do
-    sha256 "912b5de25b8b87ec64a28c2226c9acf0f89ce5cf336b7a4c0d60b7a64a4b086b" => :high_sierra
-    sha256 "af9ac02655f33d97a9c818e6f124409d5e6b79583bb15de97a08e62cd28378c5" => :sierra
-    sha256 "deb49e4bf9b66e2a28dc7538801c119b361c64cb527e36bbf7cb7c74fc54fc9f" => :el_capitan
+    sha256 "205026b787a55ff63c648c35f9d1de0236fc699ee7498bc2b09ab3899431b170" => :mojave
+    sha256 "edc96595f6d0d8ca5c7c42b6ed8eda3435d5f3a6f4c6673890ecc1ee79243529" => :high_sierra
+    sha256 "05033e4e3adb9b269a69061cf8b3b62d21095f4bd7a724a34a6966b7c814f9a9" => :sierra
+    sha256 "d313668570afe5b0eb40c5f7f1037d181596b1d172975e5ceaa69cbeaced87b2" => :el_capitan
   end
 
   depends_on "cmake" => :build

@@ -1,14 +1,15 @@
 class NodeAT8 < Formula
   desc "Platform built on V8 to build network applications"
   homepage "https://nodejs.org/"
-  url "https://nodejs.org/dist/v8.11.2/node-v8.11.2.tar.xz"
-  sha256 "539946c0381809576bed07424a35fc1740d52f4bd56305d6278d9e76c88f4979"
-  head "https://github.com/nodejs/node.git", :branch => "v8.x-staging"
+  url "https://nodejs.org/dist/v8.12.0/node-v8.12.0.tar.xz"
+  sha256 "5a9dff58016c18fb4bf902d963b124ff058a550ebcd9840c677757387bce419a"
 
   bottle do
-    sha256 "a33f5be7d206d8b8376a4fed4a7432139f5be521a74da1678de61e773b45df14" => :high_sierra
-    sha256 "124f08597eef879a824aa624733255932c461684baab2fe18399b78d7a757d0d" => :sierra
-    sha256 "8a4fae3b78ddacbcc12638beaae99a44fea7f5021243c0f679d049082247130b" => :el_capitan
+    rebuild 1
+    sha256 "46b430483d0541dd6b8d5f4bc834fcba14719c53233dfd59d9a9e24283c0f80e" => :mojave
+    sha256 "2c13559186878d8562fe5acea407aa9f1a57dd33a5b147b3e3f0aac61661f2fd" => :high_sierra
+    sha256 "60c20bd219f2dab1593a3624749b8f6fa1db25fb0a17c4a79e0b762f6f2407f0" => :sierra
+    sha256 "e24f5ad36356819ce8728108440a3cd1e1b6938cc2beaa9a86516cf7fe8ea2d0" => :el_capitan
   end
 
   keg_only :versioned_formula
@@ -19,8 +20,8 @@ class NodeAT8 < Formula
   option "without-completion", "npm bash completion will not be installed"
   option "without-icu4c", "Build with small-icu (English only) instead of system-icu (all locales)"
 
-  depends_on "python@2" => :build
   depends_on "pkg-config" => :build
+  depends_on "python@2" => :build
   depends_on "icu4c" => :recommended
   depends_on "openssl" => :optional
 
@@ -33,15 +34,11 @@ class NodeAT8 < Formula
   end
 
   def install
-    # icu4c 61.1 compatability
-    ENV.append "CPPFLAGS", "-DU_USING_ICU_NAMESPACE=1"
-
     args = ["--prefix=#{prefix}"]
     args << "--without-npm" if build.without? "npm"
     args << "--debug" if build.with? "debug"
     args << "--with-intl=system-icu" if build.with? "icu4c"
-    args << "--shared-openssl" if build.with? "openssl"
-    args << "--tag=head" if build.head?
+    args << "--shared-openssl" << "--openssl-use-def-ca-store" if build.with? "openssl"
 
     system "./configure", *args
     system "make", "install"
@@ -84,7 +81,7 @@ class NodeAT8 < Formula
       assert_predicate bin/"npm", :executable?, "npm must be executable"
       npm_args = ["-ddd", "--cache=#{HOMEBREW_CACHE}/npm_cache", "--build-from-source"]
       system "#{bin}/npm", *npm_args, "install", "npm@latest"
-      system "#{bin}/npm", *npm_args, "install", "bignum" unless head?
+      system "#{bin}/npm", *npm_args, "install", "bignum"
       assert_predicate bin/"npx", :exist?, "npx must exist"
       assert_predicate bin/"npx", :executable?, "npx must be executable"
       assert_match "< hello >", shell_output("#{bin}/npx cowsay hello")
